@@ -1,0 +1,16 @@
+Measure Motor 1
+
+theta1 = 0.1*pwm1-14
+
+pwm2 = 1500
+
+theta2 = 74
+
+
+Measure Motor 2
+
+pwm1 = 1500
+
+theta1 = 137
+
+theta2 = 0.1*pwm2-88
