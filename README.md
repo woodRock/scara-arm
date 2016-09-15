@@ -1,0 +1,2 @@
+# ENGR110-SCARA
+ENGR 110 SCARA group project
