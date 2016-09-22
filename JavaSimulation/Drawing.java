@@ -3,9 +3,9 @@
 // (powered by Fernflower decompiler)
 //
 
-package ToWebSite;
+//package ToWebSite;
 
-import ToWebSite.PointXY;
+//import ToWebSite.PointXY;
 import ecs100.UI;
 import java.awt.Color;
 import java.io.BufferedReader;

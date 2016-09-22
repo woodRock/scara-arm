@@ -1,4 +1,4 @@
-package ToWebSite;
+//package ToWebSite;
 
 
 /**
@@ -160,6 +160,15 @@ public class Arm
             valid_state = false;
             return;
         }
+
+        double dx2 = xTool - xMotor2;
+        double dy2 = yTool - yMotor2;
+        double d2 = Math.sqrt(Math.pow((dx2),2) + Math.pow((dy2),2));
+        if (d2>2*r){
+            UI.println("Arm 2 - can not reach");
+            valid_state = false;
+            return;
+        }
         double h1 = Math.sqrt(r*r - d1*d1/4);
 
         double alpha = Math.PI/2 - (Math.PI - Math.atan2(yTool - yMotor1, xTool - xMotor2));
@@ -175,14 +184,7 @@ public class Arm
             UI.println("Angle 1 -invalid");
             return;
         }
-        double dx2 = xTool - xMotor2;
-        double dy2 = yTool - yMotor2;
-        double d2 = Math.sqrt(Math.pow((dx2),2) + Math.pow((dy2),2));
-        if (d2>2*r){
-            UI.println("Arm 2 - can not reach");
-            valid_state = false;
-            return;
-        }
+
 
         double h2 = Math.sqrt(r*r - d2*d2/4);
         // elbows positions
