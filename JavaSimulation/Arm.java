@@ -175,7 +175,7 @@ public class Arm
         double xA = xTool + (xMotor1 - xTool)/2;
         double yA = yTool + (yMotor1 - yTool)/2;
         // elbows positions
-        double xJoint1 = xA + h1 * Math.sin(alpha);;
+        double xJoint1 = xA + h1 * Math.cos(alpha);;
         double yJoint1 = yA + h1 * Math.sin(alpha);;
 
         double theta1 = Math.atan2(yJoint1 - yMotor1,xJoint1-xMotor1);
@@ -190,7 +190,7 @@ public class Arm
         // elbows positions
         xA = xTool + (xMotor2 - xTool)/2;
         yA = yTool + (yMotor2 - yTool)/2;
-        double xJoint2 = xA - h2 * Math.sin(alpha);
+        double xJoint2 = xA - h2 * Math.cos(alpha);
         double yJoint2 = yA - h2 * Math.sin(alpha);
         // motor angles for both 1st elbow positions
         double theta2 = Math.atan2(yJoint2 - yMotor2, xJoint2-xMotor1);
