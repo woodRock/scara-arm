@@ -175,10 +175,10 @@ public class Arm
         double xA = xTool + (xMotor1 - xTool)/2;
         double yA = yTool + (yMotor1 - yTool)/2;
         // elbows positions
-        xJoint1 = xA - h1 * Math.sin(alpha);;
-        yJoint1 = yA - h1 * Math.sin(alpha);;
+        double xJoint1 = xA + h1 * Math.sin(alpha);;
+        double yJoint1 = yA + h1 * Math.sin(alpha);;
 
-        theta1 = Math.atan2(yJoint1 - yMotor1,xJoint1-xMotor1);
+        double theta1 = Math.atan2(yJoint1 - yMotor1,xJoint1-xMotor1);
         if ((theta1>0)||(theta1<-Math.PI)){
             valid_state = false;
             UI.println("Angle 1 -invalid");
@@ -190,18 +190,25 @@ public class Arm
         // elbows positions
         xA = xTool + (xMotor2 - xTool)/2;
         yA = yTool + (yMotor2 - yTool)/2;
-        xJoint2 = xA - h2 * Math.sin(alpha);
-        yJoint2 = yA - h2 * Math.sin(alpha);
+        double xJoint2 = xA - h2 * Math.sin(alpha);
+        double yJoint2 = yA - h2 * Math.sin(alpha);
         // motor angles for both 1st elbow positions
-        theta2 = Math.atan2(yJoint2 - yMotor2, xJoint2-xMotor1);
+        double theta2 = Math.atan2(yJoint2 - yMotor2, xJoint2-xMotor1);
         if ((theta2>0)||(theta2<-Math.PI)){
             valid_state = false;
             UI.println("Angle 2 -invalid");
             return;
         }
+
+        this.yJoint1 = xJoint1;
+        this.xJoint2 = xJoint2;
+        this.yJoint1 = yJoint1;
+        this.yJoint2 = yJoint2;
+        this.theta1 = theta1;
+        this.theta2 = theta2;
         
-        //UI.printf("xTool:%3.1f, yTool:%3.1f\n",xTool,yTool);
-        //UI.printf("theta1:%3.1f, theta2:%3.1f\n",theta1*180/Math.PI,theta2*180/Math.PI);
+        UI.printf("xTool:%3.1f, yTool:%3.1f\n",xTool,yTool);
+        UI.printf("theta1:%3.1f, theta2:%3.1f\n",theta1*180/Math.PI,theta2*180/Math.PI);
         return;
     }
     

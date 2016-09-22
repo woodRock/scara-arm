@@ -4,16 +4,6 @@
     <list default="true" id="cb1b62ea-e18b-41ea-8bea-126fd0a51d71" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Arm.java" afterPath="$PROJECT_DIR$/Arm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Drawing.java" afterPath="$PROJECT_DIR$/Drawing.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Main.java" afterPath="$PROJECT_DIR$/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PointXY.java" afterPath="$PROJECT_DIR$/PointXY.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ToolPath.java" afterPath="$PROJECT_DIR$/ToolPath.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/JavaSimulation/.idea/compiler.xml" afterPath="$PROJECT_DIR$/out/production/JavaSimulation/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/JavaSimulation/.idea/libraries/ecs100.xml" afterPath="$PROJECT_DIR$/out/production/JavaSimulation/.idea/libraries/ecs100.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/JavaSimulation/.idea/misc.xml" afterPath="$PROJECT_DIR$/out/production/JavaSimulation/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/JavaSimulation/.idea/modules.xml" afterPath="$PROJECT_DIR$/out/production/JavaSimulation/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/JavaSimulation/.idea/workspace.xml" afterPath="$PROJECT_DIR$/out/production/JavaSimulation/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/JavaSimulation/JavaSimulation.iml" afterPath="$PROJECT_DIR$/out/production/JavaSimulation/JavaSimulation.iml" />
     </list>
     <ignored path="JavaSimulation.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,10 +39,10 @@
       <file leaf-file-name="Arm.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Arm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="170" column="9" selection-start-line="170" selection-start-column="9" selection-end-line="170" selection-end-column="9" />
+            <state relative-caret-position="352">
+              <caret line="178" column="29" selection-start-line="178" selection-start-column="29" selection-end-line="178" selection-end-column="29" />
               <folding>
-                <element signature="e#0#7762#0" expanded="true" />
+                <element signature="e#0#7989#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -471,7 +461,14 @@
       <option name="project" value="LOCAL" />
       <updated>1474503244768</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Made compile">
+      <created>1474504135465</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1474504135465</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -518,7 +515,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added some of inverse equations" />
     <MESSAGE value="Changed variable names&#10;Maybe implemented inverse kinematic" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed variable names&#10;Maybe implemented inverse kinematic" />
+    <MESSAGE value="Made compile" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made compile" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -569,10 +567,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Arm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="170" column="9" selection-start-line="170" selection-start-column="9" selection-end-line="170" selection-end-column="9" />
+        <state relative-caret-position="352">
+          <caret line="178" column="29" selection-start-line="178" selection-start-column="29" selection-end-line="178" selection-end-column="29" />
           <folding>
-            <element signature="e#0#7762#0" expanded="true" />
+            <element signature="e#0#7989#0" expanded="true" />
           </folding>
         </state>
       </provider>
