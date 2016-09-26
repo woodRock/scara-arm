@@ -146,35 +146,43 @@ public class Arm
     // motor angles from tool position
     // updates variables of the class
     public void inverseKinematic(double xt_new,double yt_new){
-         
         valid_state = true;
+
+        //the position you want the tool to move to
         xTool = xt_new;
         yTool = yt_new;
-        valid_state = true;
+
+        //distance from tool to motor one in both vectors
         double dx1 = xTool - xMotor1;
         double dy1 = yTool - yMotor1;
-        // distance between pen and motor
+        // distance between tool and motor
         double d1 =  Math.sqrt(Math.pow((dx1),2) + Math.pow((dy1),2));
+
+        //Check distance is not greater than length of arm 1
         if (d1>2*r){
             UI.println("Arm 1 - can not reach");
             valid_state = false;
             return;
         }
-
+        //distance from tool to motor two in both vectors
         double dx2 = xTool - xMotor2;
         double dy2 = yTool - yMotor2;
+        // distance between tool and motor
         double d2 = Math.sqrt(Math.pow((dx2),2) + Math.pow((dy2),2));
+        //Check distance is not greater than length of arm 2
         if (d2>2*r){
             UI.println("Arm 2 - can not reach");
             valid_state = false;
             return;
         }
+        //Distance from joint to path from motor to tool
         double h1 = Math.sqrt(r*r - d1*d1/4);
 
-        double alpha = Math.PI/2 - (Math.PI - Math.atan2(yTool - yMotor1, xTool - xMotor2));
+        double alpha = Math.PI/2 - (Math.PI - Math.atan2(yTool - yMotor1, xTool - xMotor1));
+
         double xA = xTool + (xMotor1 - xTool)/2;
         double yA = yTool + (yMotor1 - yTool)/2;
-        // elbows positions
+        //Joint positions for joint 1
         double xJoint1 = xA + h1 * Math.cos(alpha);;
         double yJoint1 = yA + h1 * Math.sin(alpha);;
 
@@ -185,22 +193,28 @@ public class Arm
             return;
         }
 
-
+        //Distance from joint to path from motor to tool
         double h2 = Math.sqrt(r*r - d2*d2/4);
-        // elbows positions
+
+        alpha = Math.PI/2 - (Math.PI - Math.atan2(yTool - yMotor2, xTool - xMotor2));
+
         xA = xTool + (xMotor2 - xTool)/2;
         yA = yTool + (yMotor2 - yTool)/2;
+
+        //Joint positions for joint 1
         double xJoint2 = xA - h2 * Math.cos(alpha);
         double yJoint2 = yA - h2 * Math.sin(alpha);
+
         // motor angles for both 1st elbow positions
-        double theta2 = Math.atan2(yJoint2 - yMotor2, xJoint2-xMotor1);
+        double theta2 = Math.atan2(yJoint2 - yMotor2, xJoint2-xMotor2);
         if ((theta2>0)||(theta2<-Math.PI)){
             valid_state = false;
             UI.println("Angle 2 -invalid");
             return;
         }
 
-        this.yJoint1 = xJoint1;
+        //Assign calculated values to be the new positions of actual parts
+        this.xJoint1 = xJoint1;
         this.xJoint2 = xJoint2;
         this.yJoint1 = yJoint1;
         this.yJoint2 = yJoint2;
@@ -209,7 +223,6 @@ public class Arm
         
         UI.printf("xTool:%3.1f, yTool:%3.1f\n",xTool,yTool);
         UI.printf("theta1:%3.1f, theta2:%3.1f\n",theta1*180/Math.PI,theta2*180/Math.PI);
-        return;
     }
     
     // returns angle of motor 1
