@@ -26,27 +26,27 @@ public class Drawing {
     public void add_point_to_path(double x, double y, boolean pen) {
         PointXY new_point = new PointXY(x, y, pen);
         this.path.add(new_point);
-        UI.printf("Pioint added.x=%f y=%f pen=%b New path size - %d\n", new Object[]{Double.valueOf(x), Double.valueOf(y), Boolean.valueOf(pen), Integer.valueOf(this.path.size())});
+        UI.printf("Pioint added.x=%f y=%f pen=%b New path size - %d\n", Double.valueOf(x), Double.valueOf(y), Boolean.valueOf(pen), Integer.valueOf(this.path.size()));
     }
 
     public void print_path() {
-        UI.printf("*************************\n", new Object[0]);
+        UI.printf("*************************\n");
 
         for(int i = 0; i < this.path.size(); ++i) {
-            double x0 = ((PointXY)this.path.get(i)).get_x();
-            double y0 = ((PointXY)this.path.get(i)).get_y();
-            boolean p = ((PointXY)this.path.get(i)).get_pen();
-            UI.printf("i=%d x=%f y=%f pen=%b\n", new Object[]{Integer.valueOf(i), Double.valueOf(x0), Double.valueOf(y0), Boolean.valueOf(p)});
+            double x0 = this.path.get(i).get_x();
+            double y0 = this.path.get(i).get_y();
+            boolean p = this.path.get(i).get_pen();
+            UI.printf("i=%d x=%f y=%f pen=%b\n", Integer.valueOf(i), Double.valueOf(x0), Double.valueOf(y0), Boolean.valueOf(p));
         }
 
-        UI.printf("*************************\n", new Object[0]);
+        UI.printf("*************************\n");
     }
 
     public void draw() {
         for(int i = 1; i < this.path.size(); ++i) {
             PointXY p0 = this.get_drawing_point(i - 1);
             PointXY p1 = this.get_drawing_point(i);
-            if(((PointXY)this.path.get(i)).get_pen()) {
+            if(this.path.get(i).get_pen()) {
                 UI.setColor(Color.BLUE);
             } else {
                 UI.setColor(Color.LIGHT_GRAY);
@@ -62,11 +62,11 @@ public class Drawing {
     }
 
     public void path_raise_pen() {
-        ((PointXY)this.path.get(this.path.size() - 1)).set_pen(false);
+        this.path.get(this.path.size() - 1).set_pen(false);
     }
 
     public PointXY get_path_last_point() {
-        PointXY lp = (PointXY)this.path.get(this.path.size() - 1);
+        PointXY lp = this.path.get(this.path.size() - 1);
         return lp;
     }
 
@@ -79,10 +79,10 @@ public class Drawing {
 
             for(int i = 1; i < this.path.size(); ++i) {
                 String str_out;
-                if(((PointXY)this.path.get(i)).get_pen()) {
-                    str_out = ((PointXY)this.path.get(i)).get_x() + " " + ((PointXY)this.path.get(i)).get_y() + " 1\n";
+                if(this.path.get(i).get_pen()) {
+                    str_out = this.path.get(i).get_x() + " " + this.path.get(i).get_y() + " 1\n";
                 } else {
-                    str_out = ((PointXY)this.path.get(i)).get_x() + " " + ((PointXY)this.path.get(i)).get_y() + " 0\n";
+                    str_out = this.path.get(i).get_x() + " " + this.path.get(i).get_y() + " 0\n";
                 }
 
                 w.write(str_out);
@@ -107,7 +107,7 @@ public class Drawing {
                 String[] tokens = in_line.split(" ");
                 UI.println("Number of tokens in line " + in_line + ": " + tokens.length);
                 UI.println("The tokens are:");
-                UI.printf("%s %s %s\n", new Object[]{tokens[0], tokens[1], tokens[2]});
+                UI.printf("%s %s %s\n", tokens[0], tokens[1], tokens[2]);
                 double x = Double.parseDouble(tokens[0]);
                 double y = Double.parseDouble(tokens[1]);
                 boolean pen = Integer.parseInt(tokens[2]) == 1;
@@ -124,7 +124,7 @@ public class Drawing {
     }
 
     public PointXY get_drawing_point(int i) {
-        PointXY p = (PointXY)this.path.get(i);
+        PointXY p = this.path.get(i);
         return p;
     }
 }

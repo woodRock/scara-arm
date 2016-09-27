@@ -127,20 +127,21 @@ public class Arm
        double  ya = yJoint1 + 0.5 * (yJoint2 - yJoint1);
        // distance between joints
        double d = Math.sqrt(Math.pow((xJoint2 - xJoint1),2) + Math.pow((yJoint2 - yJoint1),2));
-       if (d<2*r){
-            valid_state = true;
-            // half distance between tool positions
-            double  h = Math.pow(r,2) + Math.sqrt(Math.pow(xa - xJoint1,2) + Math.pow(ya - yJoint1,2));
-            double alpha= Math.atan((yJoint1 - yJoint2)/(xJoint2 - xJoint1));
-            // tool position
-            double xt = xa + h * Math.cos(Math.PI/2 - alpha);
-            double yt = ya + h * Math.sin(Math.PI/2 - alpha);
-            double xt2 = xa - h*Math.cos(alpha-Math.PI/2);
-            double yt2 = ya - h*Math.sin(alpha-Math.PI/2);
-       } else {
-           valid_state = false;
-        }
-       
+       if (d<2*r) {
+           valid_state = true;
+           // half distance between tool positions
+           double h = Math.pow(r, 2) + Math.sqrt(Math.pow(xa - xJoint1, 2) + Math.pow(ya - yJoint1, 2));
+           double alpha = Math.atan((yJoint1 - yJoint2) / (xJoint2 - xJoint1));
+           // tool position
+           double xt = xa + h * Math.cos(Math.PI / 2 - alpha);
+           double yt = ya + h * Math.sin(Math.PI / 2 - alpha);
+           double xt2 = xa - h * Math.cos(alpha - Math.PI / 2);
+           double yt2 = ya - h * Math.sin(alpha - Math.PI / 2);
+           UI.println("Tool position should be- " + xt2 + "," + yt2);
+           UI.println("Tool position is- " + this.xTool + "," + this.yTool);
+           return;
+       }
+       valid_state = false;
     }
     
     // motor angles from tool position
@@ -183,8 +184,8 @@ public class Arm
         double xA = xTool + (xMotor1 - xTool)/2;
         double yA = yTool + (yMotor1 - yTool)/2;
         //Joint positions for joint 1
-        double xJoint1 = xA + h1 * Math.cos(alpha);;
-        double yJoint1 = yA + h1 * Math.sin(alpha);;
+        double xJoint1 = xA + h1 * Math.cos(alpha);
+        double yJoint1 = yA + h1 * Math.sin(alpha);
 
         double theta1 = Math.atan2(yJoint1 - yMotor1,xJoint1-xMotor1);
         if ((theta1>0)||(theta1<-Math.PI)){

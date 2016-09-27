@@ -16,6 +16,8 @@ import ecs100.UIKeyListener;
 import ecs100.UIMouseListener;
 import java.awt.Color;
 
+import java.util.Map;
+
 public class Main {
     private Arm arm;
     private Drawing drawing;
@@ -30,6 +32,8 @@ public class Main {
         UI.addButton("Load path XY", this::load_xy);
         UI.addButton("Save path Ang", this::save_ang);
         UI.addButton("Load path Ang:Play", this::load_ang);
+        UI.addButton("Check directkinematics", this::checkDirect);
+        UI.addButton("Send pulses to RPi",this::sendPulse);
         UI.setMouseMotionListener(this::doMouse);
         UI.setKeyListener(this::doKeys);
         this.arm = new Arm();
@@ -38,8 +42,24 @@ public class Main {
         this.arm.draw();
     }
 
+    public void checkDirect(){
+        state = 4;
+    }
+
+    public void sendPulse(){
+        /*
+        ProcessBuilder pb = new ProcessBuilder("scp", rFile, "root@" + host + ":" + lFile);
+        Map<String, String> env = pb.environment();
+        env.put("VAR1", "myValue");
+        env.remove("OTHERVAR");
+        env.put("VAR2", env.get("VAR1") + "suffix");
+        pb.directory("directory where the csv files located");
+        Process p = pb.start();
+        */
+    }
+
     public void doKeys(String action) {
-        UI.printf("Key :%s \n", new Object[]{action});
+        UI.printf("Key :%s \n", action);
         if(action.equals("b")) {
             this.state = 3;
         }
@@ -48,7 +68,7 @@ public class Main {
 
     public void doMouse(String action, double x, double y) {
         UI.clearGraphics();
-        String out_str = String.format("%3.1f %3.1f", new Object[]{Double.valueOf(x), Double.valueOf(y)});
+        String out_str = String.format("%3.1f %3.1f", Double.valueOf(x), Double.valueOf(y));
         UI.drawString(out_str, x + 10.0D, y + 10.0D);
         if(this.state == 1 && action.equals("clicked")) {
             this.arm.inverseKinematic(x, y);
@@ -68,7 +88,7 @@ public class Main {
             }
 
             if(this.state == 2 && action.equals("clicked")) {
-                UI.printf("Adding point x=%f y=%f\n", new Object[]{Double.valueOf(x), Double.valueOf(y)});
+                UI.printf("Adding point x=%f y=%f\n", Double.valueOf(x), Double.valueOf(y));
                 this.drawing.add_point_to_path(x, y, true);
                 this.arm.inverseKinematic(x, y);
                 this.arm.draw();
@@ -83,6 +103,11 @@ public class Main {
                 this.drawing.draw();
                 this.drawing.print_path();
                 this.state = 2;
+            }
+            if(this.state == 4 && action.equals("moved")){
+                this.arm.inverseKinematic(x,y);
+                this.arm.directKinematic();
+                this.arm.draw();
             }
 
         }
