@@ -106,8 +106,9 @@ public class Main {
             }
             if(this.state == 4 && action.equals("moved")){
                 this.arm.inverseKinematic(x,y);
-                this.arm.directKinematic();
                 this.arm.draw();
+                this.arm.directKinematic();
+
             }
 
         }

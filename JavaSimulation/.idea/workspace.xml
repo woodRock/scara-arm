@@ -4,8 +4,8 @@
     <list default="true" id="cb1b62ea-e18b-41ea-8bea-126fd0a51d71" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Arm.java" afterPath="$PROJECT_DIR$/Arm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Drawing.java" afterPath="$PROJECT_DIR$/Drawing.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Main.java" afterPath="$PROJECT_DIR$/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/JavaSimulation/.idea/workspace.xml" afterPath="$PROJECT_DIR$/out/production/JavaSimulation/.idea/workspace.xml" />
     </list>
     <ignored path="JavaSimulation.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,10 +41,10 @@
       <file leaf-file-name="Arm.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Arm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="139" column="67" selection-start-line="139" selection-start-column="67" selection-end-line="139" selection-end-column="67" />
+            <state relative-caret-position="500">
+              <caret line="138" column="64" selection-start-line="138" selection-start-column="64" selection-end-line="138" selection-end-column="64" />
               <folding>
-                <element signature="e#0#8718#0" expanded="true" />
+                <element signature="e#0#8924#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -60,13 +60,29 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Arm.java" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AppData/Local/Temp/Arm.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2574">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#6065#6066#0" expanded="false" />
+                <element signature="e#6094#6095#0" expanded="false" />
+                <element signature="e#6158#6159#0" expanded="false" />
+                <element signature="e#6187#6188#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="681">
-              <caret line="109" column="32" selection-start-line="109" selection-start-column="32" selection-end-line="109" selection-end-column="32" />
+            <state relative-caret-position="329">
+              <caret line="108" column="32" selection-start-line="108" selection-start-column="32" selection-end-line="108" selection-end-column="32" />
               <folding>
-                <element signature="e#0#4626#0" expanded="true" />
+                <element signature="e#0#4627#0" expanded="true" />
                 <element signature="imports" expanded="true" />
                 <element signature="e#1295#1296#0" expanded="true" />
                 <element signature="e#1320#1321#0" expanded="true" />
@@ -109,10 +125,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="1938" />
-    <option name="height" value="1060" />
+    <option name="x" value="713" />
+    <option name="width" value="1215" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -490,30 +505,37 @@
       <option name="project" value="LOCAL" />
       <updated>1474876973072</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added ability to check direct kinematics&#10;&#10;Direct Kinematic equations are incorrect">
+      <created>1475014141618</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1475014141618</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1060" extended-state="6" />
+    <frame x="713" y="0" width="1215" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32858709" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10292524" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10405257" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1744312" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19966583" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39978093" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -540,11 +562,14 @@
     <MESSAGE value="Made compile" />
     <MESSAGE value="??" />
     <MESSAGE value="Further commenting of inverse kinematics&#10;Inverse kinematic equation now behaves as intended" />
-    <option name="LAST_COMMIT_MESSAGE" value="Further commenting of inverse kinematics&#10;Inverse kinematic equation now behaves as intended" />
+    <MESSAGE value="Added ability to check direct kinematics&#10;&#10;Direct Kinematic equations are incorrect" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added ability to check direct kinematics&#10;&#10;Direct Kinematic equations are incorrect" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.93850267" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="3" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="antWorkspaceConfiguration">
@@ -567,7 +592,7 @@
         <state relative-caret-position="4598">
           <caret line="218" column="31" selection-start-line="218" selection-start-column="31" selection-end-line="218" selection-end-column="31" />
           <folding>
-            <element signature="e#0#8718#0" expanded="true" />
+            <element signature="e#0#8924#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -585,7 +610,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#4626#0" expanded="true" />
+            <element signature="e#0#4627#0" expanded="true" />
             <element signature="imports" expanded="true" />
             <element signature="e#1295#1296#0" expanded="true" />
             <element signature="e#1320#1321#0" expanded="true" />
@@ -618,7 +643,7 @@
         <state relative-caret-position="3553">
           <caret line="218" column="31" selection-start-line="218" selection-start-column="31" selection-end-line="218" selection-end-column="31" />
           <folding>
-            <element signature="e#0#8718#0" expanded="true" />
+            <element signature="e#0#8924#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -636,7 +661,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#4626#0" expanded="true" />
+            <element signature="e#0#4627#0" expanded="true" />
             <element signature="imports" expanded="true" />
             <element signature="e#1295#1296#0" expanded="true" />
             <element signature="e#1320#1321#0" expanded="true" />
@@ -669,7 +694,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#8718#0" expanded="true" />
+            <element signature="e#0#8924#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -687,7 +712,7 @@
         <state relative-caret-position="85">
           <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
           <folding>
-            <element signature="e#0#4626#0" expanded="true" />
+            <element signature="e#0#4627#0" expanded="true" />
             <element signature="imports" expanded="true" />
             <element signature="e#1295#1296#0" expanded="true" />
             <element signature="e#1320#1321#0" expanded="true" />
@@ -720,7 +745,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#8718#0" expanded="true" />
+            <element signature="e#0#8924#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -738,7 +763,7 @@
         <state relative-caret-position="110">
           <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
           <folding>
-            <element signature="e#0#4626#0" expanded="true" />
+            <element signature="e#0#4627#0" expanded="true" />
             <element signature="imports" expanded="true" />
             <element signature="e#1295#1296#0" expanded="true" />
             <element signature="e#1320#1321#0" expanded="true" />
@@ -771,7 +796,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#8718#0" expanded="true" />
+            <element signature="e#0#8924#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -789,7 +814,7 @@
         <state relative-caret-position="110">
           <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
           <folding>
-            <element signature="e#0#4626#0" expanded="true" />
+            <element signature="e#0#4627#0" expanded="true" />
             <element signature="imports" expanded="true" />
             <element signature="e#1295#1296#0" expanded="true" />
             <element signature="e#1320#1321#0" expanded="true" />
@@ -822,7 +847,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#8718#0" expanded="true" />
+            <element signature="e#0#8924#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -840,7 +865,7 @@
         <state relative-caret-position="110">
           <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
           <folding>
-            <element signature="e#0#4626#0" expanded="true" />
+            <element signature="e#0#4627#0" expanded="true" />
             <element signature="imports" expanded="true" />
             <element signature="e#1295#1296#0" expanded="true" />
             <element signature="e#1320#1321#0" expanded="true" />
@@ -888,10 +913,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="681">
-          <caret line="109" column="32" selection-start-line="109" selection-start-column="32" selection-end-line="109" selection-end-column="32" />
+        <state relative-caret-position="329">
+          <caret line="108" column="32" selection-start-line="108" selection-start-column="32" selection-end-line="108" selection-end-column="32" />
           <folding>
-            <element signature="e#0#4626#0" expanded="true" />
+            <element signature="e#0#4627#0" expanded="true" />
             <element signature="imports" expanded="true" />
             <element signature="e#1295#1296#0" expanded="true" />
             <element signature="e#1320#1321#0" expanded="true" />
@@ -899,12 +924,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Arm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2574">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#6065#6066#0" expanded="false" />
+            <element signature="e#6094#6095#0" expanded="false" />
+            <element signature="e#6158#6159#0" expanded="false" />
+            <element signature="e#6187#6188#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Arm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="139" column="67" selection-start-line="139" selection-start-column="67" selection-end-line="139" selection-end-column="67" />
+        <state relative-caret-position="500">
+          <caret line="138" column="64" selection-start-line="138" selection-start-column="64" selection-end-line="138" selection-end-column="64" />
           <folding>
-            <element signature="e#0#8718#0" expanded="true" />
+            <element signature="e#0#8924#0" expanded="true" />
           </folding>
         </state>
       </provider>

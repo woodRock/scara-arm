@@ -121,27 +121,33 @@ public class Arm
    // calculate tool position from motor angles 
    // updates variable in the class
    public void directKinematic(){
-       
+       //Joint positions
+       double xJoint1 = xMotor1 + r * Math.cos(theta1);
+       double yJoint1 = yMotor1 + r * Math.sin(theta1);
+
+       double xJoint2 = xMotor2 + r * Math.cos(theta2);
+       double yJoint2 = yMotor2 + r * Math.sin(theta2);
+
        // midpoint between joints
        double  xa = xJoint1 + 0.5 * (xJoint2 - xJoint1);
        double  ya = yJoint1 + 0.5 * (yJoint2 - yJoint1);
        // distance between joints
        double d = Math.sqrt(Math.pow((xJoint2 - xJoint1),2) + Math.pow((yJoint2 - yJoint1),2));
        if (d<2*r) {
-           valid_state = true;
+           //valid_state = true;
            // half distance between tool positions
-           double h = Math.pow(r, 2) + Math.sqrt(Math.pow(xa - xJoint1, 2) + Math.pow(ya - yJoint1, 2));
+           double h = Math.sqrt(Math.pow(r,2) - Math.pow(d/2,2));
            double alpha = Math.atan((yJoint1 - yJoint2) / (xJoint2 - xJoint1));
            // tool position
            double xt = xa + h * Math.cos(Math.PI / 2 - alpha);
            double yt = ya + h * Math.sin(Math.PI / 2 - alpha);
            double xt2 = xa - h * Math.cos(alpha - Math.PI / 2);
            double yt2 = ya - h * Math.sin(alpha - Math.PI / 2);
-           UI.println("Tool position should be- " + xt2 + "," + yt2);
+           UI.println("Tool position should be- " + xt + "," + yt);
            UI.println("Tool position is- " + this.xTool + "," + this.yTool);
            return;
        }
-       valid_state = false;
+       //valid_state = false;
     }
     
     // motor angles from tool position
