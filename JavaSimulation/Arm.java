@@ -20,18 +20,20 @@ public class Arm
     private int xMotor2;
     private int yMotor2;
     private double r;  // length of the upper/fore arm
+
     // parameters of servo motors - linear function pwm(angle)
     // each of two motors has unique function which should be measured
     // linear function cam be described by two points
-    // motor 1, point1 
-    private double pwm1_val_1; 
+    // motor 1, point1
+
+    private int pwm1_val_1;
     private double theta1_val_1;
     // motor 1, point 2
     private double pwm1_val_2; 
     private double theta1_val_2;
     
     // motor 2, point 1
-    private double pwm2_val_1; 
+    private int pwm2_val_1;
     private double theta2_val_1;
     // motor 2, point 2
     private double pwm2_val_2; 
@@ -62,6 +64,9 @@ public class Arm
         r = 154.0;
         theta1 = -90.0*Math.PI/180.0; // initial angles of the upper arms
         theta2 = -90.0*Math.PI/180.0;
+
+        pwm1_val_1 = (int) ((theta1*180/Math.PI + 5.4686)/0.0943);
+        pwm2_val_1 = (int)((theta2*180/Math.PI + 93.923)/0.101);
         valid_state = false;
     }
   
@@ -257,14 +262,14 @@ public class Arm
     
     // returns motor control signal
     // for motor to be in position(angle) theta1
-    // linear intepolation
+    // linear interpolation
     public int get_pwm1(){
-        int pwm = 0;
+        int pwm = (int) ((theta1 - 93.925)/-0.1041);
         return pwm;
     }
     // ditto for motor 2
     public int get_pwm2(){
-        int pwm =0;
+        int pwm = (int)((theta2 - 5.1686)/-0.0943);
         //pwm = (int)(pwm2_90 + (theta2 - 90)*pwm2_slope);
         return pwm;
     }

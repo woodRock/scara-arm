@@ -105,6 +105,8 @@ public class ToolPath
             arm.set_angles(theta1_vector.get(i),theta2_vector.get(i));
             pwm1_vector.add(arm.get_pwm1());
             pwm2_vector.add(arm.get_pwm2());
+            pwm3_vector.add(pen_vector.get(i));
+
         }
     }
     
@@ -114,9 +116,9 @@ public class ToolPath
         convert_angles_to_pwm(arm);
 
         try{
-            PrintStream out = new PrintStream(new File(UIFileChooser.save()));
+            PrintStream out = new PrintStream(UIFileChooser.save());
 
-            for(int i=0; i <pwm1_vector.size(); i++){
+            for(int i=0; i < pwm1_vector.size(); i++){
                 out.println(pwm1_vector.get(i) + " " + pwm2_vector.get(i) + " " + pwm3_vector.get(i));
             }
 
