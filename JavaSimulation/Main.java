@@ -171,6 +171,28 @@ public class Main {
     }
 
     public void drawCircle(){
+        drawing = new Drawing();
+        int xOffset = 200;
+        int yOffset = 200;
+        int d = 60;
+        int density = 2;
+        int r = (int) (d/2);
+        for (int i = 0; i < r; i+= density){
+            drawing.add_point_to_path(i + xOffset, Math.sqrt(r*r - (i*i )) + yOffset, true);
+            drawing.draw();
+        }
+        for (int i = r; i > 0; i-=density){
+            drawing.add_point_to_path(i + xOffset, -Math.sqrt(r*r - (i*i )) + yOffset, true);
+            drawing.draw();
+        }
+        for (int i = 0;i >-r; i-=density){
+            drawing.add_point_to_path(i + xOffset, -Math.sqrt(r*r - (i*i )) + yOffset, true);
+            drawing.draw();
+        }
+        for (int i = -r; i < 0; i+=density){
+            drawing.add_point_to_path(i + xOffset, Math.sqrt(r*r - (i*i )) + yOffset, true);
+            drawing.draw();
+        }
     }
 
 
