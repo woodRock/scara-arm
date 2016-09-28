@@ -141,9 +141,9 @@ public class Arm
            // tool position
            double xt = xa + h * Math.cos(Math.PI / 2 - alpha);
            double yt = ya + h * Math.sin(Math.PI / 2 - alpha);
-           double xt2 = xa - h * Math.cos(alpha - Math.PI / 2);
-           double yt2 = ya - h * Math.sin(alpha - Math.PI / 2);
-           UI.println("Tool position should be- " + xt + "," + yt);
+           double xt2 = xa - h * Math.cos( Math.PI / 2 - alpha);
+           double yt2 = ya - h * Math.sin(Math.PI / 2 - alpha);
+           UI.println("Tool position should be- " + xt2 + "," + yt2);
            UI.println("Tool position is- " + this.xTool + "," + this.yTool);
            return;
        }
