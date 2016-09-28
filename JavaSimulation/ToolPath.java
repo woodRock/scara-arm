@@ -11,18 +11,10 @@
  * @1000000.0
  */
 import ecs100.UI;
+import ecs100.UIFileChooser;
+
+import java.io.*;
 import java.util.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 
 public class ToolPath
@@ -77,6 +69,7 @@ public class ToolPath
                 }
             }
         }
+        if(fname != null) save_angles(fname);
     }
     
     public void save_angles(String fname){
@@ -116,8 +109,18 @@ public class ToolPath
     }
     
     // save file with motor control values
-    public void save_pwm_file(){
+    public void save_pwm_file(Drawing drawing, Arm arm){
+        convert_drawing_to_angles(drawing,arm,null);
+        convert_angles_to_pwm(arm);
 
+        try{
+            PrintStream out = new PrintStream(new File(UIFileChooser.save()));
+
+            for(int i=0; i <pwm1_vector.size(); i++){
+                out.println(pwm1_vector.get(i) + " " + pwm2_vector.get(i) + " " + pwm3_vector.get(i));
+            }
+
+        }catch (IOException e){ UI.println("Error: " + e);}
     }
 
 }

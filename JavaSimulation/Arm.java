@@ -97,12 +97,9 @@ public class Arm
         UI.drawString(out_str, xMotor2 +2*mr, yMotor2 -mr/2+3*mr);
         out_str=String.format("yMotor2=%d", yMotor2);
         UI.drawString(out_str, xMotor2 +2*mr, yMotor2 -mr/2+4*mr);
-        // draw Field Of View
-        UI.setColor(Color.GRAY);
-        UI.drawRect(0,0,640,480);
-         
        // it can be uncommented later when
        // kinematic equations are derived
+        drawField();
         if ( valid_state) {
           // draw upper arms
           UI.setColor(Color.GREEN);
@@ -116,6 +113,12 @@ public class Arm
           UI.drawOval(xTool -rt/2, yTool -rt/2,rt,rt);
         }
         
+   }
+
+   public void drawField(){
+       // draw Field Of View
+       UI.setColor(Color.GRAY);
+       UI.drawRect(0,0,640,480);
    }
     
    // calculate tool position from motor angles 
@@ -236,6 +239,7 @@ public class Arm
         UI.printf("xTool:%3.1f, yTool:%3.1f\n",xTool,yTool);
         UI.printf("theta1:%3.1f, theta2:%3.1f\n",theta1*180/Math.PI,theta2*180/Math.PI);
     }
+
     
     // returns angle of motor 1
     public double get_theta1(){

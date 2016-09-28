@@ -27,6 +27,7 @@ public class Main {
 
     public Main() {
         UI.initialise();
+        UI.addButton("Clear Drawing", ()-> drawing = new Drawing());
         UI.addButton("xy to angles", this::inverse);
         UI.addButton("Enter path XY", this::enter_path_xy);
         UI.addButton("Save path XY", this::save_xy);
@@ -34,17 +35,23 @@ public class Main {
         UI.addButton("Save path Ang", this::save_ang);
         UI.addButton("Load path Ang:Play", this::load_ang);
         UI.addButton("Check directkinematics", this::checkDirect);
+        UI.addButton("Save Pulse", this::savePulse);
         UI.addButton("Send pulses to RPi",this::sendPulse);
+
         UI.setMouseMotionListener(this::doMouse);
         UI.setKeyListener(this::doKeys);
         this.arm = new Arm();
         this.drawing = new Drawing();
-        this.run();
+        tool_path = new ToolPath();
         this.arm.draw();
     }
 
     public void checkDirect(){
         state = 4;
+    }
+
+    public void savePulse(){
+        this.tool_path.save_pwm_file(drawing, arm);
     }
 
     public void sendPulse(){
@@ -65,9 +72,12 @@ public class Main {
     }
 
     public void doMouse(String action, double x, double y) {
+        if(x >= 640 || y >=480) return;
         UI.clearGraphics();
         String out_str = String.format("%3.1f %3.1f", Double.valueOf(x), Double.valueOf(y));
         UI.drawString(out_str, x + 10.0D, y + 10.0D);
+        this.arm.drawField();
+        this.drawing.draw();
         if(this.state == 1 && action.equals("clicked")) {
             this.arm.inverseKinematic(x, y);
             this.arm.draw();
@@ -132,23 +142,16 @@ public class Main {
         String fname = UIFileChooser.open();
         this.drawing.load_path(fname);
         this.drawing.draw();
-        this.arm.draw();
     }
 
     public void save_ang() {
-        String fname = UIFileChooser.open();
+        String fname = UIFileChooser.save();
         this.tool_path.convert_drawing_to_angles(this.drawing, this.arm, fname);
     }
 
     public void load_ang() {
     }
 
-    public void run() {
-        while(true) {
-            this.arm.draw();
-            UI.sleep(20.0D);
-        }
-    }
 
     public static void main(String[] args) {
         new Main();
