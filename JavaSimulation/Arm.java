@@ -134,20 +134,20 @@ public class Arm
        // distance between joints
        double d = Math.sqrt(Math.pow((xJoint2 - xJoint1),2) + Math.pow((yJoint2 - yJoint1),2));
        if (d<2*r) {
-           //valid_state = true;
+           valid_state = true;
            // half distance between tool positions
            double h = Math.sqrt(Math.pow(r,2) - Math.pow(d/2,2));
            double alpha = Math.atan((yJoint1 - yJoint2) / (xJoint2 - xJoint1));
            // tool position
            double xt = xa + h * Math.cos(Math.PI / 2 - alpha);
            double yt = ya + h * Math.sin(Math.PI / 2 - alpha);
-           double xt2 = xa - h * Math.cos( Math.PI / 2 - alpha);
+           double xt2 = xa - h * Math.cos(Math.PI / 2 - alpha);
            double yt2 = ya - h * Math.sin(Math.PI / 2 - alpha);
            UI.println("Tool position should be- " + xt2 + "," + yt2);
            UI.println("Tool position is- " + this.xTool + "," + this.yTool);
            return;
        }
-       //valid_state = false;
+       valid_state = false;
     }
     
     // motor angles from tool position
@@ -220,6 +220,11 @@ public class Arm
             return;
         }
 
+        if(d1+d2 <= 2*r){
+            valid_state = false;
+            UI.println("Singularity");
+            return;
+        }
         //Assign calculated values to be the new positions of actual parts
         this.xJoint1 = xJoint1;
         this.xJoint2 = xJoint2;
