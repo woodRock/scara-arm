@@ -42,6 +42,8 @@ public class Main {
         UI.addButton("Save Pulse", this::savePulse);
         UI.addButton("Send pulses to RPi",this::sendPulse);
         UI.addButton("Circle", this::drawCircle);
+        UI.addButton("Line", this::drawLine);
+        UI.addButton("Square", this::drawSquare);
 
         UI.setMouseMotionListener(this::doMouse);
         UI.setKeyListener(this::doKeys);
@@ -172,28 +174,55 @@ public class Main {
 
     public void drawCircle(){
         drawing = new Drawing();
+        double  xOffset = 200;
+        double yOffset = 200;
+        int d = 300;
+        double incr = 0.1;
+        for  (double i = 0; i - incr <= 2* Math.PI; i += incr){
+            drawing.add_point_to_path(xOffset + (d/2) * Math.sin(i), yOffset + (d/2) * Math.cos(i), true);
+        }
+        drawing.draw();
+    }
+
+    public void drawLine(){
+        drawing = new Drawing();
         int xOffset = 200;
         int yOffset = 200;
-        int d = 60;
-        int density = 2;
-        int r = (int) (d/2);
-        for (int i = 0; i < r; i+= density){
-            drawing.add_point_to_path(i + xOffset, Math.sqrt(r*r - (i*i )) + yOffset, true);
-            drawing.draw();
-        }
-        for (int i = r; i > 0; i-=density){
-            drawing.add_point_to_path(i + xOffset, -Math.sqrt(r*r - (i*i )) + yOffset, true);
-            drawing.draw();
-        }
-        for (int i = 0;i >-r; i-=density){
-            drawing.add_point_to_path(i + xOffset, -Math.sqrt(r*r - (i*i )) + yOffset, true);
-            drawing.draw();
-        }
-        for (int i = -r; i < 0; i+=density){
-            drawing.add_point_to_path(i + xOffset, Math.sqrt(r*r - (i*i )) + yOffset, true);
+        int increments = 10;
+        int l = 100;
+        for (int i = 0; i < l; i+= increments){
+            drawing.add_point_to_path(i+ xOffset, yOffset, true );
             drawing.draw();
         }
     }
+
+    public void drawSquare(){
+        drawing = new Drawing();
+        int xOffset = 200;
+        int yOffset = 200;
+        int increments = 10;
+        int l = 100;
+        for (int i = 0; i < l; i+= increments){
+            drawing.add_point_to_path(i+ xOffset, yOffset, true );
+            drawing.draw();
+        }
+        for (int i = 0; i < l; i+= increments){
+            drawing.add_point_to_path(l + xOffset, yOffset + i, true );
+            drawing.draw();
+        }
+        for (int i = 0; i < l; i+= increments){
+            drawing.add_point_to_path(xOffset + l - i, l + yOffset, true );
+            drawing.draw();
+        }
+        for (int i = 0; i <= l; i+= increments){
+            drawing.add_point_to_path(xOffset, yOffset + l - i, true );
+            drawing.draw();
+        }
+    }
+
+    public void skyNet(){}
+
+    public void snowMan(){}
 
 
     public static void main(String[] args) {
