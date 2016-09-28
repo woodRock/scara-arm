@@ -74,23 +74,17 @@ public class ToolPath
     
     public void save_angles(String fname){
         for ( int i = 0 ; i < theta1_vector.size(); i++){
-         UI.printf(" t1=%3.1f t2=%3.1f pen=%d\n",
-            theta1_vector.get(i),theta2_vector.get(i),pen_vector.get(i));
+         UI.printf(" t1=%3.1f t2=%3.1f pen=%d\n", theta1_vector.get(i),theta2_vector.get(i),pen_vector.get(i));
         }
         
          try {
             //Whatever the file path is.
             File statText = new File(fname);
-            FileOutputStream is = new FileOutputStream(statText);
-            OutputStreamWriter osw = new OutputStreamWriter(is);    
-            Writer w = new BufferedWriter(osw);
-            String str_out;
+            PrintStream out = new PrintStream(statText);
             for (int i = 1; i < theta1_vector.size() ; i++){
-                str_out = String.format("%3.1f,%3.1f,%d\n",
-                  theta1_vector.get(i),theta2_vector.get(i),pen_vector.get(i));
-                w.write(str_out);
+                out.println(theta1_vector.get(i) + " " + theta2_vector.get(i)+ " " + pen_vector.get(i));
             }
-            w.close();
+            out.close();
         } catch (IOException e) {
             UI.println("Problem writing to the file statsTest.txt");
         }
@@ -121,7 +115,7 @@ public class ToolPath
             for(int i=0; i < pwm1_vector.size(); i++){
                 out.println(pwm1_vector.get(i) + " " + pwm2_vector.get(i) + " " + pwm3_vector.get(i));
             }
-
+            out.close();
         }catch (IOException e){ UI.println("Error: " + e);}
     }
 

@@ -48,7 +48,9 @@ public class Arm
     private double yJoint1;
     private double xJoint2;
     private double yJoint2;
+
     private double xTool;     // position of the tool
+
     private double yTool;
     private boolean valid_state; // is state of the arm physically possible?
     
@@ -147,12 +149,12 @@ public class Arm
            double h = Math.sqrt(Math.pow(r,2) - Math.pow(d/2,2));
            double alpha = Math.atan((yJoint1 - yJoint2) / (xJoint2 - xJoint1));
            // tool position
-           double xt = xa + h * Math.cos(Math.PI / 2 - alpha);
-           double yt = ya + h * Math.sin(Math.PI / 2 - alpha);
            double xt2 = xa - h * Math.cos(Math.PI / 2 - alpha);
            double yt2 = ya - h * Math.sin(Math.PI / 2 - alpha);
            UI.println("Tool position should be- " + xt2 + "," + yt2);
            UI.println("Tool position is- " + this.xTool + "," + this.yTool);
+           this.xTool = xt2;
+           this.yTool = yt2;
            return;
        }
        valid_state = false;
@@ -273,5 +275,12 @@ public class Arm
         //pwm = (int)(pwm2_90 + (theta2 - 90)*pwm2_slope);
         return pwm;
     }
-    
+
+    public double getyTool() {
+        return yTool;
+    }
+
+    public double getxTool() {
+        return xTool;
+    }
  }

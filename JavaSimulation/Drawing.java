@@ -26,7 +26,7 @@ public class Drawing {
     public void add_point_to_path(double x, double y, boolean pen) {
         PointXY new_point = new PointXY(x, y, pen);
         this.path.add(new_point);
-        UI.printf("Pioint added.x=%f y=%f pen=%b New path size - %d\n", Double.valueOf(x), Double.valueOf(y), Boolean.valueOf(pen), Integer.valueOf(this.path.size()));
+        UI.printf("Point added.x=%f y=%f pen=%b New path size - %d\n", Double.valueOf(x), Double.valueOf(y), Boolean.valueOf(pen), Integer.valueOf(this.path.size()));
     }
 
     public void print_path() {
@@ -77,7 +77,7 @@ public class Drawing {
             OutputStreamWriter osw = new OutputStreamWriter(is);
             BufferedWriter w = new BufferedWriter(osw);
 
-            for(int i = 1; i < this.path.size(); ++i) {
+            for(int i = 0; i < this.path.size(); i++) {
                 String str_out;
                 if(this.path.get(i).get_pen()) {
                     str_out = this.path.get(i).get_x() + " " + this.path.get(i).get_y() + " 1\n";

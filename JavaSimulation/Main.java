@@ -16,8 +16,10 @@ import ecs100.UIKeyListener;
 import ecs100.UIMouseListener;
 import java.awt.Color;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Main {
     private Arm arm;
@@ -150,6 +152,19 @@ public class Main {
     }
 
     public void load_ang() {
+        try {
+            Scanner sc = new Scanner(new File(UIFileChooser.open()));
+            while (sc.hasNext()) {
+                arm.set_angles((sc.nextDouble()), sc.nextDouble());
+                arm.directKinematic();
+                if (sc.nextInt() == 1) {
+                    this.drawing.add_point_to_path(arm.getxTool(), arm.getyTool(), true);
+                } else this.drawing.add_point_to_path(arm.getxTool(), arm.getyTool(), false);
+                drawing.draw();
+
+
+            }
+        }catch (IOException e){UI.println(e);}
     }
 
 
