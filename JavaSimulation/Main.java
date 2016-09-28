@@ -16,6 +16,7 @@ import ecs100.UIKeyListener;
 import ecs100.UIMouseListener;
 import java.awt.Color;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class Main {
@@ -47,15 +48,13 @@ public class Main {
     }
 
     public void sendPulse(){
-        /*
-        ProcessBuilder pb = new ProcessBuilder("scp", rFile, "root@" + host + ":" + lFile);
-        Map<String, String> env = pb.environment();
-        env.put("VAR1", "myValue");
-        env.remove("OTHERVAR");
-        env.put("VAR2", env.get("VAR1") + "suffix");
-        pb.directory("directory where the csv files located");
-        Process p = pb.start();
-        */
+        String remote ="";
+        String directory = "";
+        String file = UI.askString("File name: ");
+        String[] args = new String[] {"/bin/bash", "-c", "scp", file , remote, directory};
+        try {
+            Process p = new ProcessBuilder(args).start();
+        }catch (IOException e){ UI.println(e);}
     }
 
     public void doKeys(String action) {
@@ -104,7 +103,7 @@ public class Main {
                 this.drawing.print_path();
                 this.state = 2;
             }
-            if(this.state == 4 && action.equals("moved")){
+            if(this.state == 4 && action.equals("clicked")){
                 this.arm.inverseKinematic(x,y);
                 this.arm.draw();
                 this.arm.directKinematic();

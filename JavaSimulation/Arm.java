@@ -129,8 +129,8 @@ public class Arm
        double yJoint2 = yMotor2 + r * Math.sin(theta2);
 
        // midpoint between joints
-       double  xa = xJoint1 + 0.5 * (xJoint2 - xJoint1);
-       double  ya = yJoint1 + 0.5 * (yJoint2 - yJoint1);
+       double  xa = xJoint1 + (xJoint2 - xJoint1) / 2;
+       double  ya = yJoint1 + (yJoint2 - yJoint1) / 2;
        // distance between joints
        double d = Math.sqrt(Math.pow((xJoint2 - xJoint1),2) + Math.pow((yJoint2 - yJoint1),2));
        if (d<2*r) {
