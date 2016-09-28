@@ -16,8 +16,10 @@ import ecs100.UIKeyListener;
 import ecs100.UIMouseListener;
 import java.awt.Color;
 
+import java.awt.geom.Arc2D;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -39,6 +41,7 @@ public class Main {
         UI.addButton("Check directkinematics", this::checkDirect);
         UI.addButton("Save Pulse", this::savePulse);
         UI.addButton("Send pulses to RPi",this::sendPulse);
+        UI.addButton("Circle", this::drawCircle);
 
         UI.setMouseMotionListener(this::doMouse);
         UI.setKeyListener(this::doKeys);
@@ -155,16 +158,19 @@ public class Main {
         try {
             Scanner sc = new Scanner(new File(UIFileChooser.open()));
             while (sc.hasNext()) {
-                arm.set_angles((sc.nextDouble()), sc.nextDouble());
+                double x = Double.parseDouble(sc.nextLine());
+                double y = Double.parseDouble(sc.nextLine());
+                arm.set_angles(x * Math.PI/180,y* Math.PI/180);
                 arm.directKinematic();
-                if (sc.nextInt() == 1) {
+                if (Double.parseDouble(sc.nextLine()) == 1) {
                     this.drawing.add_point_to_path(arm.getxTool(), arm.getyTool(), true);
                 } else this.drawing.add_point_to_path(arm.getxTool(), arm.getyTool(), false);
                 drawing.draw();
-
-
             }
         }catch (IOException e){UI.println(e);}
+    }
+
+    public void drawCircle(){
     }
 
 

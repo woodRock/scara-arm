@@ -82,7 +82,9 @@ public class ToolPath
             File statText = new File(fname);
             PrintStream out = new PrintStream(statText);
             for (int i = 1; i < theta1_vector.size() ; i++){
-                out.println(theta1_vector.get(i) + " " + theta2_vector.get(i)+ " " + pen_vector.get(i));
+                out.println(theta1_vector.get(i));
+                out.println(theta2_vector.get(i));
+                out.println(pen_vector.get(i));
             }
             out.close();
         } catch (IOException e) {
