@@ -245,9 +245,9 @@ public class Main {
             while(sc.hasNext()) {
                 String string = sc.next();
                 //System.out.println("here");
-                double x = 200;
-                double y = 75;
-                double scalar = 0.60;
+                double x = 250;
+                double y = 150;
+                double scalar = 0.6;
                 if (string.equals("L")) {
                     x += scalar * sc.nextDouble();
                     y += scalar * sc.nextDouble();
