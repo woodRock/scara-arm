@@ -19,11 +19,11 @@ import java.util.*;
 
 public class ToolPath
 {
-     int n_steps; //straight line segmentt will be broken
+     int n_steps; //straight line segment will be broken
                       // into that many sections
                       
      // storage for angles and 
-     // moto control signals
+     // motor control signals
      ArrayList<Double> theta1_vector;
      ArrayList<Double> theta2_vector;
      ArrayList<Integer> pen_vector;
@@ -123,6 +123,7 @@ public class ToolPath
             }
             out.println(1500+ "," + 1500 + "," + 1500);
             out.close();
+
         }catch (IOException e){ UI.println("Error: " + e);}
     }
 

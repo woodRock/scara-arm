@@ -127,45 +127,6 @@ public class Drawing {
     }
 
     public void loadPathFromSvg(String fName) {
-        path.clear();
-        File inputFile = new File(fName);
-        try {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = builder.parse(inputFile);
-            doc.getDocumentElement().normalize();
-            NodeList nodes = doc.getElementsByTagName("path");
-            for (int i = 0; i < nodes.getLength(); i++) {
-                Node node = nodes.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) node;
-                    String d = element.getAttribute("d");
-                    String[] commands = d.split("(?=[a-zA-Z])");
-                    for (String c : commands) {
-                        double x;
-                        double y;
-                        String[] coords;
-                        switch (c.charAt(0)) {
-                            case 'M':
-                                coords = c.replaceAll("[a-zA-Z]", "").split("\\s+");
-                                x = Double.parseDouble(coords[0]);
-                                y = Double.parseDouble(coords[1]);
-                                add_point_to_path(x + 160, y + 120, false);
-                                break;
-                            case 'L':
-                                coords = c.replaceAll("[a-zA-Z]", "").split("\\s+");
-                                x = Double.parseDouble(coords[0]);
-                                y = Double.parseDouble(coords[1]);
-                                add_point_to_path(x + 160, y + 120, true);
-                                break;
-                        }
-                    }
-
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public int get_drawing_size() {
