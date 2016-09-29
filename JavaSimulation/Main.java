@@ -9,7 +9,7 @@
 //import ToWebSite.Drawing;
 //import ToWebSite.PointXY;
 //import ToWebSite.ToolPath;
-import ecs100.UI;
+import ecs100.*;
 import ecs100.UIButtonListener;
 import ecs100.UIFileChooser;
 import ecs100.UIKeyListener;
@@ -19,6 +19,7 @@ import java.awt.Color;
 import java.awt.geom.Arc2D;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
@@ -41,7 +42,7 @@ public class Main {
         UI.addButton("Check directkinematics", this::checkDirect);
         UI.addButton("Save Pulse", this::savePulse);
         UI.addButton("Send pulses to RPi",this::sendPulse);
-        UI.addButton("Load SVG", this::loadSVG);
+        UI.addButton("Load SVG", this::interpretSVG);
         UI.addButton("Circle", this::drawCircle);
         UI.addButton("Line", this::drawLine);
         UI.addButton("Square", this::drawSquare);
@@ -227,9 +228,65 @@ public class Main {
        // drawing.add_point_to_path(l + xOffset,yOffset,true);
     }
 
-    public void skyNet(){}
 
-    public void snowMan(){}
+    //woodRock made original SVG interpreter, unlike most others
+    public void interpretSVG(){
+        String fileName = UI.askString("Filename:");
+        drawing = new Drawing();
+        try {
+            Scanner sc_for_spaces = new Scanner(new File(fileName + ".txt"));
+            PrintStream out = new PrintStream(new File(fileName + "2.txt"));
+            while(sc_for_spaces.hasNext()){
+                out.print(" ");
+                out.print(addSpaces(sc_for_spaces.next()));
+            }
+
+            Scanner sc = new Scanner(new File(fileName + "2.txt"));
+            while(sc.hasNext()) {
+                String string = sc.next();
+                //System.out.println("here");
+                double x = 200;
+                double y = 75;
+                double scalar = 0.60;
+                if (string.equals("L")) {
+                    x += scalar * sc.nextDouble();
+                    y += scalar * sc.nextDouble();
+                    drawing.add_point_to_path(x, y, true);
+                    UI.printf("x:%.2f, y:%.2f, true \n", x, y);
+                }
+                if (string.equals("M")) {
+                    x += scalar * sc.nextDouble();
+                    y += scalar * sc.nextDouble();
+                    UI.println("here");
+                    drawing.add_point_to_path(x, y, false);
+                    UI.printf("x:%.2f, y:%.2f, false \n", x, y);
+                }
+            }
+            drawing.draw();
+        }
+        catch (Exception e) { System.out.println("Java Exception" + e);}
+    }
+
+    public String addSpaces(String token){
+        ArrayList<String> temp = new ArrayList<String>();
+        String result = "";
+        for (int i = 0; i < token.length() - 1; i++){
+            String character = token.substring(i, i+1);
+            if (character.equals("L") || character.equals("M")){
+                character = " " + character + " ";
+            }
+            if (character == " "){
+                character = " ";
+            }
+            temp.add(character);
+        }
+        for (String s: temp){
+            result += s;
+        }
+        UI.println(result);
+        return result;
+    }
+
 
 
     public static void main(String[] args) {
