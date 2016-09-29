@@ -41,6 +41,7 @@ public class Main {
         UI.addButton("Check directkinematics", this::checkDirect);
         UI.addButton("Save Pulse", this::savePulse);
         UI.addButton("Send pulses to RPi",this::sendPulse);
+        UI.addButton("Load SVG", this::loadSVG);
         UI.addButton("Circle", this::drawCircle);
         UI.addButton("Line", this::drawLine);
         UI.addButton("Square", this::drawSquare);
@@ -53,6 +54,11 @@ public class Main {
         this.arm.draw();
     }
 
+    public void loadSVG(){
+        drawing.loadPathFromSvg(UIFileChooser.open());
+        drawing.draw();
+    }
+
     public void checkDirect(){
         state = 4;
     }
@@ -62,12 +68,11 @@ public class Main {
     }
 
     public void sendPulse(){
-        String remoteDirectory = "user@adress:directory";
-        String file = UI.askString("File name: ");
-        String[] args = new String[] {"/bin/bash", "-c", "scp", file , remoteDirectory};
         try {
-            Process p = new ProcessBuilder(args).start();
-        }catch (IOException e){ UI.println(e);}
+            Runtime.getRuntime().exec("expect scp.exp");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void doKeys(String action) {
@@ -176,8 +181,8 @@ public class Main {
         drawing = new Drawing();
         double  xOffset = 200;
         double yOffset = 200;
-        int d = 300;
-        double incr = 0.1;
+        int d = 50;
+        double incr = 0.5;
         for  (double i = 0; i - incr <= 2* Math.PI; i += incr){
             drawing.add_point_to_path(xOffset + (d/2) * Math.sin(i), yOffset + (d/2) * Math.cos(i), true);
         }

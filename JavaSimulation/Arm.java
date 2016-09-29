@@ -151,8 +151,6 @@ public class Arm
            // tool position
            double xt2 = xa - h * Math.cos(Math.PI / 2 - alpha);
            double yt2 = ya - h * Math.sin(Math.PI / 2 - alpha);
-           UI.println("Tool position should be- " + xt2 + "," + yt2);
-           UI.println("Tool position is- " + this.xTool + "," + this.yTool);
            this.xTool = xt2;
            this.yTool = yt2;
            return;
@@ -266,12 +264,13 @@ public class Arm
     // for motor to be in position(angle) theta1
     // linear interpolation
     public int get_pwm1(){
-        int pwm = (int) ((theta1 - 93.925)/-0.1041);
+        int pwm = (int)((theta1 - 5.1686)/-0.0943);
         return pwm;
     }
     // ditto for motor 2
     public int get_pwm2(){
-        int pwm = (int)((theta2 - 5.1686)/-0.0943);
+        int pwm = (int) ((theta2 - 93.925)/-0.1041);
+
         //pwm = (int)(pwm2_90 + (theta2 - 90)*pwm2_slope);
         return pwm;
     }

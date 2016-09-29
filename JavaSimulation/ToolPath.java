@@ -55,6 +55,7 @@ public class ToolPath
             // take two points
             PointXY p0 = drawing.get_drawing_point(i);
             PointXY p1 = drawing.get_drawing_point(i+1);
+            n_steps = (int)(Math.sqrt(Math.pow(p0.get_x() - p1.get_x(),2) + Math.pow(p0.get_y() - p1.get_y(),2)));
             // break line between points into segments: n_steps of them
             for ( int j = 0 ; j< n_steps;j++) { // break segment into n_steps str. lines
                 double x = p0.get_x() + j*(p1.get_x()-p0.get_x())/n_steps;
@@ -101,8 +102,11 @@ public class ToolPath
             arm.set_angles(theta1_vector.get(i),theta2_vector.get(i));
             pwm1_vector.add(arm.get_pwm1());
             pwm2_vector.add(arm.get_pwm2());
-            pwm3_vector.add(pen_vector.get(i));
-
+            if(pen_vector.get(i) ==1){
+                pwm3_vector.add(1050);
+            }else{
+                pwm3_vector.add(1500);
+            }
         }
     }
     
@@ -112,11 +116,12 @@ public class ToolPath
         convert_angles_to_pwm(arm);
 
         try{
-            PrintStream out = new PrintStream(UIFileChooser.save());
+            PrintStream out = new PrintStream(new File("pwm.txt"));
 
             for(int i=0; i < pwm1_vector.size(); i++){
-                out.println(pwm1_vector.get(i) + " " + pwm2_vector.get(i) + " " + pwm3_vector.get(i));
+                out.println(pwm1_vector.get(i) + "," + pwm2_vector.get(i) + "," + pwm3_vector.get(i));
             }
+            out.println(1500+ "," + 1500 + "," + 1500);
             out.close();
         }catch (IOException e){ UI.println("Error: " + e);}
     }
