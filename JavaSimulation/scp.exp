@@ -1,0 +1,6 @@
+#!/usr/bin/expect
+	spawn scp pwm.txt pi@10.140.141.22:Arm
+	set pass "pi"
+	expect {
+	password: { send "$pass\r"; exp_continue}
+}
