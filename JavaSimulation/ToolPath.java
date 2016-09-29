@@ -103,7 +103,7 @@ public class ToolPath
             pwm1_vector.add(arm.get_pwm1());
             pwm2_vector.add(arm.get_pwm2());
             if(pen_vector.get(i) ==1){
-                pwm3_vector.add(1050);
+                pwm3_vector.add(1100);
             }else{
                 pwm3_vector.add(1500);
             }
