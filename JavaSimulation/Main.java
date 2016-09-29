@@ -179,9 +179,9 @@ public class Main {
 
     public void drawCircle(){
         drawing = new Drawing();
-        double  xOffset = 400;
-        double yOffset = 250;
-        int d = 50;
+        double  xOffset = 250;
+        double yOffset = 200;
+        int d = 67;
         double incr = 0.5;
         for  (double i = 0; i - incr <= 2* Math.PI; i += incr){
             drawing.add_point_to_path(xOffset + (d/2) * Math.sin(i), yOffset + (d/2) * Math.cos(i), true);
@@ -203,7 +203,7 @@ public class Main {
 
     public void drawSquare(){
         drawing = new Drawing();
-        int xOffset = 300;
+        int xOffset = 250;
         int yOffset = 100;
         int increments = 1;
         int l = 54;
