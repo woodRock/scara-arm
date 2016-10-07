@@ -143,7 +143,7 @@ public class Arm
        double  ya = yJoint1 + (yJoint2 - yJoint1) / 2;
        // distance between joints
        double d = Math.sqrt(Math.pow((xJoint2 - xJoint1),2) + Math.pow((yJoint2 - yJoint1),2));
-       if (d<2*r) {
+       if (d<2*r) {     //is the position reachable
            valid_state = true;
            // half distance between tool positions
            double h = Math.sqrt(Math.pow(r,2) - Math.pow(d/2,2));
