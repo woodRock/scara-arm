@@ -9,19 +9,15 @@
 //import ToWebSite.Drawing;
 //import ToWebSite.PointXY;
 //import ToWebSite.ToolPath;
-import ecs100.*;
-import ecs100.UIButtonListener;
-import ecs100.UIFileChooser;
-import ecs100.UIKeyListener;
-import ecs100.UIMouseListener;
-import java.awt.Color;
 
-import java.awt.geom.Arc2D;
+import ecs100.UI;
+import ecs100.UIFileChooser;
+
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -55,11 +51,6 @@ public class Main {
         this.arm.draw();
     }
 
-    public void loadSVG(){
-        drawing.loadPathFromSvg(UIFileChooser.open());
-        drawing.draw();
-    }
-
     public void checkDirect(){
         state = 4;
     }
@@ -81,7 +72,6 @@ public class Main {
         if(action.equals("b")) {
             this.state = 3;
         }
-
     }
 
     public void doMouse(String action, double x, double y) {
@@ -91,11 +81,11 @@ public class Main {
         UI.drawString(out_str, x + 10.0D, y + 10.0D);
         this.arm.drawField();
         this.drawing.draw();
-        if(this.state == 1 && action.equals("clicked")) {
+        if (this.state == 1 && action.equals("clicked")) {
             this.arm.inverseKinematic(x, y);
             this.arm.draw();
         } else {
-            if((this.state == 2 || this.state == 3) && action.equals("moved")) {
+            if ((this.state == 2 || this.state == 3) && action.equals("moved")) {
                 this.arm.inverseKinematic(x, y);
                 this.arm.draw();
                 if(this.state == 2 && this.drawing.get_path_size() > 0) {
@@ -104,11 +94,9 @@ public class Main {
                     UI.setColor(Color.GRAY);
                     UI.drawLine(lp.get_x(), lp.get_y(), x, y);
                 }
-
                 this.drawing.draw();
             }
-
-            if(this.state == 2 && action.equals("clicked")) {
+            if (this.state == 2 && action.equals("clicked")) {
                 UI.printf("Adding point x=%f y=%f\n", Double.valueOf(x), Double.valueOf(y));
                 this.drawing.add_point_to_path(x, y, true);
                 this.arm.inverseKinematic(x, y);
@@ -116,8 +104,7 @@ public class Main {
                 this.drawing.draw();
                 this.drawing.print_path();
             }
-
-            if(this.state == 3 && action.equals("clicked")) {
+            if (this.state == 3 && action.equals("clicked")) {
                 this.drawing.add_point_to_path(x, y, false);
                 this.arm.inverseKinematic(x, y);
                 this.arm.draw();
@@ -125,20 +112,18 @@ public class Main {
                 this.drawing.print_path();
                 this.state = 2;
             }
-            if(this.state == 4 && action.equals("clicked")){
+            if (this.state == 4 && action.equals("clicked")){
                 this.arm.inverseKinematic(x,y);
                 this.arm.draw();
                 this.arm.directKinematic();
-
             }
-
         }
     }
 
     public void save_xy() {
         this.state = 0;
-        String fname = UIFileChooser.save();
-        this.drawing.save_path(fname);
+        String fileName = UIFileChooser.save();
+        this.drawing.save_path(fileName);
     }
 
     public void enter_path_xy() {
@@ -152,14 +137,14 @@ public class Main {
 
     public void load_xy() {
         this.state = 0;
-        String fname = UIFileChooser.open();
-        this.drawing.load_path(fname);
+        String fileName = UIFileChooser.open();
+        this.drawing.load_path(fileName);
         this.drawing.draw();
     }
 
     public void save_ang() {
-        String fname = UIFileChooser.save();
-        this.tool_path.convert_drawing_to_angles(this.drawing, this.arm, fname);
+        String fileName = UIFileChooser.save();
+        this.tool_path.convert_drawing_to_angles(this.drawing, this.arm, fileName);
     }
 
     public void load_ang() {
@@ -225,11 +210,8 @@ public class Main {
             drawing.draw();
         }
         drawing.add_point_to_path(l + xOffset,yOffset,true);
-       // drawing.add_point_to_path(l + xOffset,yOffset,true);
     }
 
-
-    //woodRock made original SVG interpreter, unlike most others
     public void interpretSVG(){
         String fileName = UI.askString("Filename:");
         drawing = new Drawing();
@@ -240,11 +222,9 @@ public class Main {
                 out.print(" ");
                 out.print(addSpaces(sc_for_spaces.next()));
             }
-
             Scanner sc = new Scanner(new File(fileName + "2.txt"));
             while(sc.hasNext()) {
                 String string = sc.next();
-                //System.out.println("here");
                 double x = 250;
                 double y = 150;
                 double scalar = 0.6;
@@ -264,7 +244,9 @@ public class Main {
             }
             drawing.draw();
         }
-        catch (Exception e) { System.out.println("Java Exception" + e);}
+        catch (Exception e) {
+            System.out.println("Java Exception" + e);
+        }
     }
 
     public String addSpaces(String token){
@@ -286,8 +268,6 @@ public class Main {
         UI.println(result);
         return result;
     }
-
-
 
     public static void main(String[] args) {
         new Main();

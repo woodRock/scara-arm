@@ -9,7 +9,8 @@
  */
 
 import ecs100.UI;
-import java.awt.Color;
+
+import java.awt.*;
 
 public class Arm
 {

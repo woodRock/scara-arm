@@ -6,22 +6,11 @@
 //package ToWebSite;
 
 //import ToWebSite.PointXY;
-import ecs100.UI;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.awt.Color;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import ecs100.UI;
+
+import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Drawing {

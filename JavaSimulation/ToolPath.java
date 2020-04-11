@@ -10,11 +10,13 @@
  * @Arthur Roberts 
  * @1000000.0
  */
-import ecs100.UI;
-import ecs100.UIFileChooser;
 
-import java.io.*;
-import java.util.*;
+import ecs100.UI;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
 
 
 public class ToolPath
