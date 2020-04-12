@@ -52,15 +52,15 @@ public class Arm {
         final int LINE_WIDTH = 5;
         UI.setLineWidth(LINE_WIDTH);
         UI.setColor(this.MOTOR_COLOR);
-        drawMotorStats("₁", this.motor1, theta1);
-        drawMotorStats("₂", this.motor2, theta2);
+        drawMotorStatistics("₁", this.motor1, theta1);
+        drawMotorStatistics("₂", this.motor2, theta2);
     }
 
-    private void drawMotorStats(String motor, Point<Double> point, double theta) {
+    private void drawMotorStatistics(String motor, Point<Double> point, double theta) {
         final int MOTOR_RADIUS = 20;
         UI.drawOval(point.getX() - MOTOR_RADIUS /2, point.getY() - MOTOR_RADIUS /2, MOTOR_RADIUS, MOTOR_RADIUS);
         UI.drawString(String.format("Θ%s=%3.1f",motor, theta*180/Math.PI), point.getX() - 2 * MOTOR_RADIUS, point.getY() - MOTOR_RADIUS /2 + 2 * MOTOR_RADIUS);
-        UI.drawString(String.format("Motor%s", motor, point.getX()), point.getX() - 2 * MOTOR_RADIUS, point.getY() - MOTOR_RADIUS /2 + 3 * MOTOR_RADIUS);
+        UI.drawString(String.format("Motor%s", motor), point.getX() - 2 * MOTOR_RADIUS, point.getY() - MOTOR_RADIUS /2 + 3 * MOTOR_RADIUS);
         UI.drawString(String.format("(%.0f,%.0f)", point.getX(), point.getY()), point.getX()-2 * MOTOR_RADIUS, point.getY() - MOTOR_RADIUS /2 + 4 * MOTOR_RADIUS);
     }
 
@@ -94,47 +94,95 @@ public class Arm {
     public void directKinematic() {
         double xJoint1 = this.motor1.getX() + this.r * Math.cos(this.theta1);
         double yJoint1 = this.motor1.getY() + this.r * Math.sin(this.theta1);
+
         double xJoint2 = this.motor2.getX() + this.r * Math.cos(this.theta2);
         double yJoint2 = this.motor2.getY() + this.r * Math.sin(this.theta2);
+
         double xa = xJoint1 + (xJoint2 - xJoint1) / 2;
         double ya = yJoint1 + (yJoint2 - yJoint1) / 2;
+
         double d = distance(xJoint1, xJoint2, yJoint1, yJoint2);
+        if (d < 2 * this.r ) {
+            double h = Math.sqrt(Math.abs(Math.pow(r, 2) - Math.pow(d / 2, 2)));
+            double alpha = Math.atan((yJoint1 - yJoint2) / (xJoint2 - xJoint1));
 
-        this.validArmPosition = isDistanceValid(d);
-
-        double h = distance(this.r,0,d/2,0);
-        double alpha = Math.atan((yJoint1 - yJoint2) / (xJoint2 - xJoint1));
-        double xt2 = xa - h * Math.cos(Math.PI / 2 - alpha);
-        double yt2 = ya - h * Math.sin(Math.PI / 2 - alpha);
-        setToolXY(xt2, yt2);
+            double xt2 = xa - h * Math.cos(Math.PI / 2 - alpha);
+            double yt2 = ya - h * Math.sin(Math.PI / 2 - alpha);
+            setToolXY(xt2, yt2);
+        } else {
+            UI.println("Invalid");
+        }
     }
 
     public void inverseKinematic(double xTool,double yTool) {
+        validArmPosition = true;
+
+        //the position you want the tool to move to
         setToolXY(xTool, yTool);
-        double d1 =  distance(this.tool.getX() - this.motor1.getX(),0,this.tool.getY() - this.motor1.getY(),0);
-        double d2 = distance(this.tool.getY() - this.motor2.getY(),0,this.tool.getX() - this.motor2.getX(),0);
-        double h1 = distance(r,0,d1/2,0);
-        double alpha = Math.PI/2 - (Math.PI - Math.atan2(this.tool.getY() - this.motor1.getY(), this.tool.getX() - this.motor1.getX()));
-        double xA = this.tool.getX() + (this.motor1.getX() - this.tool.getX())/2;
-        double yA = this.tool.getY() + (this.motor1.getY() - this.tool.getY())/2;
+
+        //distance from tool to motor one in both vectors
+        double dx1 = xTool - motor1.getX();
+        double dy1 = yTool - motor1.getY();
+        // distance between tool and motor
+        double d1 =  Math.sqrt(Math.pow((dx1),2) + Math.pow((dy1),2));
+
+        //Check distance is not greater than length of arm 1
+        if (d1>2*r){
+            validArmPosition = false;
+            return;
+        }
+        //distance from tool to motor two in both vectors
+        double dx2 = xTool - motor2.getX();
+        double dy2 = yTool - motor2.getY();
+        // distance between tool and motor
+        double d2 = Math.sqrt(Math.pow((dx2),2) + Math.pow((dy2),2));
+        //Check distance is not greater than length of arm 2
+        if (d2>2*r){
+            validArmPosition = false;
+            return;
+        }
+        //Distance from joint to path from motor to tool
+        double h1 = Math.sqrt(r*r - d1*d1/4);
+
+        double alpha = Math.PI/2 - (Math.PI - Math.atan2(yTool - motor1.getY(), xTool - motor1.getX()));
+
+        double xA = xTool + (motor1.getX() - xTool)/2;
+        double yA = yTool + (motor1.getY() - yTool)/2;
+        //Joint positions for joint 1
         double xJoint1 = xA + h1 * Math.cos(alpha);
         double yJoint1 = yA + h1 * Math.sin(alpha);
-        double theta1 = Math.atan2(yJoint1 - this.motor1.getY(), xJoint1 - this.motor1.getX());
-        alpha = Math.PI/2 - (Math.PI - Math.atan2(this.tool.getY() - this.motor2.getY(), this.tool.getX() - this.motor2.getX()));
-        xA = this.tool.getX() + (this.motor2.getX() - this.tool.getX())/2;
-        yA = this.tool.getY() + (this.motor2.getY() - this.tool.getY())/2;
-        double h2 = distance(r,0,d2/2,0);
-        double xJoint2 = xA - h2 * Math.cos(alpha);
-        double yJoint2 = yA - h2 * Math.sin(alpha);
-        double theta2 = Math.atan2(yJoint2 - this.motor2.getY(), xJoint2 - this.motor2.getX());
 
-        if (!isValidArmPosition(d1, d2, theta1, theta2)) {
-            //throw new Exception("Invalid Arm Position");
+        double theta1 = Math.atan2(yJoint1 - motor1.getY(),xJoint1-motor1.getX());
+        if ((theta1>0)||(theta1<-Math.PI)){
+            validArmPosition = false;
+            return;
         }
 
-        Point<Double> p1 = new Point<>(xJoint1,yJoint1);
-        Point<Double> p2 = new Point<>(xJoint2, yJoint2);
-        setJointXY(p1,p2);
+        //Distance from joint to path from motor to tool
+        double h2 = Math.sqrt(r*r - d2*d2/4);
+
+        alpha = Math.PI/2 - (Math.PI - Math.atan2(yTool - motor2.getY(), xTool - motor2.getX()));
+
+        xA = xTool + (motor2.getX() - xTool)/2;
+        yA = yTool + (motor2.getY() - yTool)/2;
+
+        //Joint positions for joint 1
+        double xJoint2 = xA - h2 * Math.cos(alpha);
+        double yJoint2 = yA - h2 * Math.sin(alpha);
+
+        // motor angles for both 1st elbow positions
+        double theta2 = Math.atan2(yJoint2 - motor2.getY(), xJoint2-motor2.getX());
+        if ((theta2>0)||(theta2<-Math.PI)){
+            validArmPosition = false;
+            return;
+        }
+
+        if(d1+d2 <= 2*r){
+            validArmPosition = false;
+            return;
+        }
+        //Assign calculated values to be the new positions of actual parts
+        setJointXY(new Point<>(xJoint1,yJoint1), new Point<>(xJoint2, yJoint2));
         setAngles(theta1, theta2);
     }
 
@@ -163,11 +211,6 @@ public class Arm {
         return this.theta2;
     }
 
-    public void setAngles(double t1, double t2){
-        this.theta1 = t1;
-        this.theta2 = t2;
-    }
-
     public int getPWM1(){
         return (int)((this.theta1 - 5.1686)/-0.0943);
     }
@@ -188,6 +231,10 @@ public class Arm {
         this.tool = new Point(x,y);
     }
 
+    public void setAngles(double t1, double t2){
+        this.theta1 = t1;
+        this.theta2 = t2;
+    }
     private void setJointXY(Point<Double> p1, Point<Double> p2){
         this.joint1 = p1;
         this.joint2 = p2;

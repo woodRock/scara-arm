@@ -34,11 +34,7 @@ public class ToolPath {
             for (int j = 0; j < this.n_steps; j++) {
                 double x = p0.getX() + j * (p1.getX() - p0.getX()) / this.n_steps;
                 double y = p0.getY() + j * (p1.getY() - p0.getY()) / this.n_steps;
-                try {
-                    arm.inverseKinematic(x, y);
-                } catch (Exception error){
-                    UI.println("Invalid Position:\n" + error.getMessage());
-                }
+                arm.inverseKinematic(x, y);
                 this.theta1Vector.add(arm.getTheta1()*180/Math.PI);
                 this.theta2Vector.add(arm.getTheta2()*180/Math.PI);
                 if (p0.getPen()){

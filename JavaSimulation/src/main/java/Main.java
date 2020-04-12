@@ -1,6 +1,5 @@
 import ecs100.UI;
 import ecs100.UIFileChooser;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +13,7 @@ public class Main {
     private Drawing drawing;
     private ToolPath toolPath;
     private STATES state = STATES.PEN_DOWN;
-    private double delay;
+    private double delay = 20;
 
     private enum STATES {
         INITIAL,
@@ -33,16 +32,16 @@ public class Main {
 
     private void initializeUI() {
         UI.initialise();
-        UI.addSlider("Delay",10,100, speed -> this.delay = speed );
+        UI.addSlider("Delay",1,50, speed -> this.delay = speed );
         UI.addButton("Draw", () -> this.state = STATES.PEN_DOWN );
         UI.addButton("Clear", this::hardReset);
         UI.addButton("Draw Circle", this::drawCircle);
         UI.addButton("Draw Line", this::drawLine);
         UI.addButton("Draw Square", this::drawSquare);
-        UI.addButton("Show Angle", this::inverse);
+        UI.addButton("Show Angle", () -> this.state = STATES.INVERSE_KINEMATICS);
         UI.addButton("Show Direct Kinematics", () -> this.state = STATES.DIRECT_KINEMATICS);
-        UI.addButton("Save Path", this::saveXY);
-        UI.addButton("Load Path", this::loadXY);
+        UI.addButton("Save Path", this::savePath);
+        UI.addButton("Load Path", this::loadPath);
         UI.addButton("Save Angles", this::saveAngle);
         UI.addButton("Load Angles", this::loadAngle);
         UI.addButton("Save Pulse", this::savePulse);
@@ -94,6 +93,13 @@ public class Main {
                 reset();
                 break;
             }
+            case "p": {
+                if (this.state != STATES.AUTOMATED){
+                    this.state = STATES.AUTOMATED;
+                } else {
+                    this.state = STATES.PEN_DOWN;
+                }
+            }
         }
     }
 
@@ -107,7 +113,15 @@ public class Main {
         drawPenDown(x,y,action);
         drawPenUp(x,y,action);
         directKinematic(action);
+        showAngle();
         draw();
+    }
+
+    private void showAngle(){
+        if (this.state == STATES.INVERSE_KINEMATICS){
+            UI.clearText();
+            UI.println(String.format("Θ₁:%.1f, Θ₂:%.1f", this.arm.getTheta1(), this.arm.getTheta2()));
+        }
     }
 
     private void calculatePosition(double x, double y){
@@ -115,8 +129,10 @@ public class Main {
     }
 
     private void directKinematic(String action){
-        if (this.state == STATES.DIRECT_KINEMATICS && action.equals("clicked")){
+        if (this.state == STATES.DIRECT_KINEMATICS){
             this.arm.directKinematic();
+            UI.clearText();
+            UI.println(String.format("Θ₁:%.1f, Θ₂:%.1f", this.arm.getTheta1(), this.arm.getTheta2()));
         }
     }
 
@@ -171,21 +187,16 @@ public class Main {
         return x >= this.WIDTH || y >= this.HEIGHT;
     }
 
-    public void saveXY() {
+    public void savePath() {
         this.state = STATES.INITIAL;
         this.drawing.savePath(UIFileChooser.save());
     }
 
-    public void loadXY() {
+    public void loadPath() {
         clearDrawing();
         this.state = STATES.AUTOMATED;
-        this.drawing.loadPath(UIFileChooser.open(), this.arm);
+        this.drawing.loadPath(UIFileChooser.open(), this.arm, this.delay);
         this.state = STATES.MANUAL;
-    }
-
-    public void inverse() {
-        this.state = STATES.INVERSE_KINEMATICS;
-        UI.println(String.format("Θ₁:%.1f, Θ₂:%.1f", this.arm.getTheta1(), this.arm.getTheta2()));
     }
 
     public void saveAngle() {
@@ -199,13 +210,12 @@ public class Main {
         try {
             Scanner sc = new Scanner(new File(UIFileChooser.open()));
             while (sc.hasNext()) {
-                double x = Double.parseDouble(sc.nextLine());
-                double y = Double.parseDouble(sc.nextLine());
-                this.arm.setAngles(x * Math.PI/180,y* Math.PI/180);
+                double t1 = Double.parseDouble(sc.nextLine());
+                double t2 = Double.parseDouble(sc.nextLine());
+                this.arm.setAngles(t1* Math.PI/180,t2 * Math.PI/180);
                 this.arm.directKinematic();
                 boolean pen = Double.parseDouble(sc.nextLine()) == 1;
-                drawPoint(this.arm.getXTool(), this.arm.getYTool(),pen);
-                UI.println(String.format("(%f,%f)", this.arm.getXTool(), this.arm.getYTool()));
+                drawPoint(this.arm.getXTool(), this.arm.getYTool(), pen);
             }
         } catch (IOException error) {
             UI.println("Invalid Angle File:\n" + error.getMessage());
@@ -220,10 +230,11 @@ public class Main {
         final double diameter = 67;
         final double xOffset = this.WIDTH/2;
         final double yOffset = this.HEIGHT/2 - diameter;
-        double increment = 0.01;
-        for  (double i = 0; i - increment <= 2* Math.PI; i += increment){
+        double increment = 0.1;
+        for (double i = 0; i - increment <= 2* Math.PI; i += increment){
             drawPoint(xOffset + (diameter/2) * Math.sin(i), yOffset + (diameter/2) * Math.cos(i), true);
         }
+        drawPoint(xOffset + (diameter/2) * Math.sin(0), yOffset + (diameter/2) * Math.cos(0), true);
         this.state = STATES.MANUAL;
     }
 
@@ -257,7 +268,6 @@ public class Main {
         for (int i = 0; i <= length; i++){
             drawPoint(xOffset,yOffset + length - i, true);
         }
-        this.drawing.addPointToPath(length + xOffset,yOffset,true);
         this.state = STATES.MANUAL;
     }
 

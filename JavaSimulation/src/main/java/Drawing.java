@@ -67,7 +67,7 @@ public class Drawing {
         }
     }
 
-    public void loadPath(String fileName, Arm arm) {
+    public void loadPath(String fileName, Arm arm, double delay) {
         String inLine;
         try {
             BufferedReader e = new BufferedReader(new FileReader(new File(fileName)));
@@ -84,7 +84,7 @@ public class Drawing {
                 arm.inverseKinematic(x,y);
                 arm.draw();
                 this.draw();
-                UI.sleep(10);
+                UI.sleep(delay);
             }
         } catch (Exception error) {
             UI.println("Invalid Points File:\n" + error.getMessage());
