@@ -1,9 +1,9 @@
 import ecs100.UI;
 import ecs100.UIFileChooser;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,13 +13,17 @@ public class Main {
     private Arm arm;
     private Drawing drawing;
     private ToolPath toolPath;
-    private int state;
+    private STATES state = STATES.PEN_DOWN;
+    private double delay;
 
     private enum STATES {
         INITIAL,
-        INVERSED,
-        STARTED,
-        FINISH
+        INVERSE_KINEMATICS,
+        PEN_DOWN,
+        PEN_UP,
+        DIRECT_KINEMATICS,
+        AUTOMATED,
+        MANUAL
     }
 
     public Main() {
@@ -29,34 +33,39 @@ public class Main {
 
     private void initializeUI() {
         UI.initialise();
-        UI.addButton("Clear Drawing", this::defaults);
-        UI.addButton("xy to angles", this::inverse);
-        UI.addButton("Enter path XY", this::enterPathXY);
-        UI.addButton("Save path XY", this::saveXY);
-        UI.addButton("Load path XY", this::loadXY);
-        UI.addButton("Save path Ang", this::saveAngle);
-        UI.addButton("Load path Ang:Play", this::loadAngle);
-        UI.addButton("Check Direct Kinematics", this::checkDirect);
+        UI.addSlider("Delay",10,100, speed -> this.delay = speed );
+        UI.addButton("Draw", () -> this.state = STATES.PEN_DOWN );
+        UI.addButton("Clear", this::hardReset);
+        UI.addButton("Draw Circle", this::drawCircle);
+        UI.addButton("Draw Line", this::drawLine);
+        UI.addButton("Draw Square", this::drawSquare);
+        UI.addButton("Show Angle", this::inverse);
+        UI.addButton("Show Direct Kinematics", () -> this.state = STATES.DIRECT_KINEMATICS);
+        UI.addButton("Save Path", this::saveXY);
+        UI.addButton("Load Path", this::loadXY);
+        UI.addButton("Save Angles", this::saveAngle);
+        UI.addButton("Load Angles", this::loadAngle);
         UI.addButton("Save Pulse", this::savePulse);
-        UI.addButton("Send pulses to RPi",this::sendPulse);
-        UI.addButton("Load SVG", this::drawSVG);
-        UI.addButton("Circle", this::drawCircle);
-        UI.addButton("Line", this::drawLine);
-        UI.addButton("Square", this::drawSquare);
+        UI.addButton("Export Pulse",this::sendPulse);
+        UI.addButton("Load SVG", this::parseSVG);
+        UI.addButton("Quit", () -> UI.quit());
         UI.setMouseMotionListener(this::doMouse);
         UI.setKeyListener(this::doKeys);
     }
 
     private void defaults() {
         this.arm = new Arm();
-        this.drawing = new Drawing();
-        this.toolPath = new ToolPath();
-        this.arm.draw();
-        this.drawing.draw();
+        hardReset();
     }
 
-    public void checkDirect(){
-        this.state = 4;
+    private void reset() {
+        this.drawing = new Drawing();
+        this.toolPath = new ToolPath();
+    }
+
+    private void hardReset(){
+        reset();
+        doMouse("moved", this.WIDTH/2,this.HEIGHT/4);
     }
 
     public void savePulse(){
@@ -72,65 +81,90 @@ public class Main {
     }
 
     public void doKeys(String action) {
-        UI.printf("Key :%s \n", action);
-        if(action.equals("b")) {
-            this.state = 3;
+        switch (action){
+            case "b": {
+                this.state = STATES.PEN_UP;
+                break;
+            }
+            case "q": {
+                UI.quit();
+                break;
+            }
+            case "c": {
+                reset();
+                break;
+            }
         }
     }
 
     public void doMouse(String action, double x, double y) {
-        if (isOffScreen(x,y)) {
+        if (isOffScreen(x,y) || this.state.equals(STATES.AUTOMATED)) {
             return;
         }
-        UI.clearGraphics();
-        String outStr = String.format("%3.1f %3.1f", x, y);
-        UI.drawString(outStr, x + 10.0D, y + 10.0D);
-        this.arm.drawField();
-        this.drawing.draw();
-        if (this.state == 1 && action.equals("clicked")) {
-            moveArm(x,y);
-            this.arm.draw();
-        } else {
-            if ((this.state == 2 || this.state == 3) && action.equals("moved")) {
-                moveArm(x,y);
-                this.arm.draw();
-                if(this.state == 2 && this.drawing.getPathSize() > 0) {
-                    new PointXY();
-                    PointXY lp = this.drawing.getPathLastPoint();
-                    UI.setColor(Color.GRAY);
-                    UI.drawLine(lp.getX(), lp.getY(), x, y);
-                }
-                this.drawing.draw();
-            }
-            if (this.state == 2 && action.equals("clicked")) {
-                this.drawing.addPointToPath(x, y, true);
-                moveArm(x,y);
-                this.arm.draw();
-                this.drawing.draw();
-                this.drawing.printPath();
-            }
-            if (this.state == 3 && action.equals("clicked")) {
-                this.drawing.addPointToPath(x, y, false);
-                moveArm(x,y);
-                this.arm.draw();
-                this.drawing.draw();
-                this.drawing.printPath();
-                this.state = 2;
-            }
-            if (this.state == 4 && action.equals("clicked")){
-                moveArm(x,y);
-                this.arm.draw();
-                this.arm.directKinematic();
-            }
+        drawMouseToolTip(x,y);
+        drawLineGuide(x,y,action);
+        calculatePosition(x,y);
+        drawPenDown(x,y,action);
+        drawPenUp(x,y,action);
+        directKinematic(action);
+        draw();
+    }
+
+    private void calculatePosition(double x, double y){
+        this.arm.inverseKinematic(x,y);
+    }
+
+    private void directKinematic(String action){
+        if (this.state == STATES.DIRECT_KINEMATICS && action.equals("clicked")){
+            this.arm.directKinematic();
         }
     }
 
-    private void moveArm(double x, double y){
-        try {
-            this.arm.inverseKinematic(x,y);
-        } catch (Exception error){
-            // UI.println("Invalid Position:" + error.getMessage());
+    private void drawPenDown(double x, double y, String action){
+        if (isPendDown(action)) {
+            this.state = STATES.PEN_UP;
+            this.drawing.addPointToPath(x, y, true);
         }
+    }
+
+    private boolean isPendDown(String action){
+        return this.state == STATES.PEN_DOWN && action.equals("clicked");
+    }
+
+    private void drawPenUp(double x, double y, String action){
+        if (isPenUp(action)) {
+            this.state = STATES.PEN_DOWN;
+            this.drawing.addPointToPath(x, y, false);
+        }
+    }
+
+    private boolean isPenUp(String action){
+        return this.state == STATES.PEN_UP && action.equals("clicked");
+    }
+
+    private void drawLineGuide(double x, double y, String action) {
+        if (!isDrawingALine(action)){
+            return;
+        }
+        PenPosition lp = this.drawing.getPathLastPoint();
+        UI.setColor(Color.GRAY);
+        UI.drawLine(lp.getX(), lp.getY(), x, y);
+    }
+
+    private boolean isDrawingALine(String action){
+        return (this.state == STATES.PEN_DOWN) && action.equals("moved") && this.drawing.getPathSize() > 0;
+    }
+
+    private void drawMouseToolTip(double x, double y){
+        final double offset = 20;
+        UI.clearGraphics();
+        String outStr = String.format("%3.1f %3.1f", x, y);
+        UI.drawString(outStr, x + offset, y + offset);
+    }
+
+    private void draw(){
+        this.arm.draw();
+        this.drawing.draw();
     }
 
     private boolean isOffScreen(double x, double y){
@@ -138,30 +172,30 @@ public class Main {
     }
 
     public void saveXY() {
-        this.state = 0;
+        this.state = STATES.INITIAL;
         this.drawing.savePath(UIFileChooser.save());
     }
 
     public void loadXY() {
-        this.state = 0;
-        this.drawing.loadPath(UIFileChooser.open());
-        this.drawing.draw();
+        clearDrawing();
+        this.state = STATES.AUTOMATED;
+        this.drawing.loadPath(UIFileChooser.open(), this.arm);
+        this.state = STATES.MANUAL;
     }
 
     public void inverse() {
-        this.state = 1;
-        this.arm.draw();
-    }
-
-    public void enterPathXY() {
-        this.state = 2;
+        this.state = STATES.INVERSE_KINEMATICS;
+        UI.println(String.format("Θ₁:%.1f, Θ₂:%.1f", this.arm.getTheta1(), this.arm.getTheta2()));
     }
 
     public void saveAngle() {
+        this.state = STATES.INITIAL;
         this.toolPath.convertDrawingToAngles(this.drawing, this.arm, UIFileChooser.save());
     }
 
     public void loadAngle() {
+        clearDrawing();
+        this.state = STATES.AUTOMATED;
         try {
             Scanner sc = new Scanner(new File(UIFileChooser.open()));
             while (sc.hasNext()) {
@@ -169,18 +203,20 @@ public class Main {
                 double y = Double.parseDouble(sc.nextLine());
                 this.arm.setAngles(x * Math.PI/180,y* Math.PI/180);
                 this.arm.directKinematic();
-                if (Double.parseDouble(sc.nextLine()) == 1) {
-                    this.drawing.addPointToPath(arm.getXTool(), arm.getYTool(), true);
-                } else this.drawing.addPointToPath(arm.getXTool(), arm.getYTool(), false);
-                this.drawing.draw();
+                boolean pen = Double.parseDouble(sc.nextLine()) == 1;
+                drawPoint(this.arm.getXTool(), this.arm.getYTool(),pen);
+                UI.println(String.format("(%f,%f)", this.arm.getXTool(), this.arm.getYTool()));
             }
         } catch (IOException error) {
             UI.println("Invalid Angle File:\n" + error.getMessage());
+        } finally {
+            this.state = STATES.MANUAL;
         }
     }
 
     public void drawCircle() {
         clearDrawing();
+        this.state = STATES.AUTOMATED;
         final double diameter = 67;
         final double xOffset = this.WIDTH/2;
         final double yOffset = this.HEIGHT/2 - diameter;
@@ -188,21 +224,24 @@ public class Main {
         for  (double i = 0; i - increment <= 2* Math.PI; i += increment){
             drawPoint(xOffset + (diameter/2) * Math.sin(i), yOffset + (diameter/2) * Math.cos(i), true);
         }
+        this.state = STATES.MANUAL;
     }
 
     public void drawLine() {
         clearDrawing();
-        int length = 100;
-        int xOffset = this.WIDTH/2 - length/2;
-        int yOffset = this.HEIGHT/2 - length;
-        int increments = 1;
-        for (int i = 0; i < length; i+= increments){
+        this.state = STATES.AUTOMATED;
+        final int length = 100;
+        final int xOffset = this.WIDTH/2 - length/2;
+        final int yOffset = this.HEIGHT/2 - length;
+        for (int i = 0; i < length; i++){
             drawPoint(i + xOffset, yOffset, true);
         }
+        this.state = STATES.MANUAL;
     }
 
     public void drawSquare() {
         clearDrawing();
+        this.state = STATES.AUTOMATED;
         final int length = 54;
         final int xOffset = this.WIDTH/2 - length/2;
         final int yOffset = this.HEIGHT/2 - 2*length;
@@ -219,40 +258,21 @@ public class Main {
             drawPoint(xOffset,yOffset + length - i, true);
         }
         this.drawing.addPointToPath(length + xOffset,yOffset,true);
+        this.state = STATES.MANUAL;
     }
 
-    private void drawPoint(double x, double y, boolean pen){
-        UI.clearGraphics();
-        this.arm.drawField();
-        moveArm(x,y);
-        this.arm.draw();
-        this.drawing.addPointToPath(x, y, pen );
-        this.drawing.draw();
-        sleep();
-    }
-
-    private void sleep(){
-        final int delay = 5;
-        try {
-            Thread.sleep(delay);
-        }
-        catch(InterruptedException ex)
-        {
-            Thread.currentThread().interrupt();
-        }
-    }
-
-    public void drawSVG() {
-        String fileName = UIFileChooser.open();
+    public void parseSVG() {
         clearDrawing();
+        this.state = STATES.AUTOMATED;
+        String fileName = UIFileChooser.open();
         try {
-            Scanner spacesScanner = new Scanner(new File(fileName + ".txt"));
-            PrintStream out = new PrintStream(new File(fileName + "2.txt"));
+            Scanner spacesScanner = new Scanner(new File(fileName));
+            String out = "";
             while(spacesScanner.hasNext()){
-                out.print(" ");
-                out.print(addSpaces(spacesScanner.next()));
+                out += " ";
+                out += addSpaces(spacesScanner.next());
             }
-            Scanner sc = new Scanner(new File(fileName + "2.txt"));
+            Scanner sc = new Scanner(out);
             while(sc.hasNext()) {
                 String string = sc.next();
                 double x = this.WIDTH/2 - 100;
@@ -272,6 +292,8 @@ public class Main {
         }
         catch (Exception error) {
             UI.println("SVG File Error:\n " + error.getMessage());
+        } finally {
+            this.state = STATES.MANUAL;
         }
     }
 
@@ -294,12 +316,32 @@ public class Main {
         return result.toString();
     }
 
-    public static void main(String[] args) {
-        new Main();
+    private void drawPoint(double x, double y, boolean pen){
+        UI.clearGraphics();
+        this.arm.inverseKinematic(x,y);
+        this.arm.draw();
+        this.drawing.addPointToPath(x, y, pen);
+        this.drawing.draw();
+        sleep();
+    }
+
+    private void sleep(){
+        int delay = (int) this.delay;
+        try {
+            UI.sleep(delay);
+        }
+        catch (Exception ex) {
+            UI.println("Sleep error: " + ex.getMessage());
+        }
     }
 
     private void clearDrawing(){
         UI.clearGraphics();
-        this.drawing = new Drawing();
+        UI.clearText();
+        defaults();
+    }
+
+    public static void main(String[] args) {
+        new Main();
     }
 }

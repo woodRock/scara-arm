@@ -1,22 +1,17 @@
 import ecs100.UI;
+
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 
 public class Drawing {
-    private ArrayList<PointXY> path = new ArrayList();
+    private ArrayList<PenPosition> path = new ArrayList();
 
-    public Drawing() {
-    }
-
-    public void reset(){
-        this.path = new ArrayList<>();
-        this.draw();
-    }
+    public Drawing() { }
 
     public void addPointToPath(double x, double y, boolean pen) {
-        PointXY new_point = new PointXY(x, y, pen);
-        this.path.add(new_point);
+        PenPosition penPosition = new PenPosition(x, y, pen);
+        this.path.add(penPosition);
     }
 
     public void printPath() {
@@ -32,8 +27,8 @@ public class Drawing {
 
     public void draw() {
         for(int i = 1; i < this.path.size(); ++i) {
-            PointXY p0 = this.getDrawingPoint(i - 1);
-            PointXY p1 = this.getDrawingPoint(i);
+            PenPosition p0 = this.getDrawingPoint(i - 1);
+            PenPosition p1 = this.getDrawingPoint(i);
             if(this.path.get(i).getPen()) {
                 UI.setLineWidth(2);
                 UI.setColor(Color.BLUE);
@@ -48,7 +43,7 @@ public class Drawing {
         return this.path.size();
     }
 
-    public PointXY getPathLastPoint() {
+    public PenPosition getPathLastPoint() {
         return this.path.get(this.path.size() - 1);
     }
 
@@ -60,9 +55,9 @@ public class Drawing {
             BufferedWriter w = new BufferedWriter(osw);
             String strOut = "";
 
-            for (PointXY pointXY : this.path) {
-                strOut += pointXY.getX() + " " + pointXY.getY();
-                strOut += (pointXY.getPen()) ? "1" : "0";
+            for (PenPosition penPosition : this.path) {
+                strOut = penPosition.getX() + " " + penPosition.getY() + " ";
+                strOut += (penPosition.getPen()) ? "1" : "0";
                 strOut += "\n";
                 w.write(strOut);
             }
@@ -72,7 +67,7 @@ public class Drawing {
         }
     }
 
-    public void loadPath(String fileName) {
+    public void loadPath(String fileName, Arm arm) {
         String inLine;
         try {
             BufferedReader e = new BufferedReader(new FileReader(new File(fileName)));
@@ -84,7 +79,12 @@ public class Drawing {
                 double x = Double.parseDouble(tokens[0]);
                 double y = Double.parseDouble(tokens[1]);
                 boolean pen = Integer.parseInt(tokens[2]) == 1;
+                UI.clearGraphics();
                 this.addPointToPath(x, y, pen);
+                arm.inverseKinematic(x,y);
+                arm.draw();
+                this.draw();
+                UI.sleep(10);
             }
         } catch (Exception error) {
             UI.println("Invalid Points File:\n" + error.getMessage());
@@ -92,10 +92,10 @@ public class Drawing {
     }
 
     public int getDrawingSize() {
-        return this.path.size();
+        return this.path.size() - 1;
     }
 
-    public PointXY getDrawingPoint(int i) {
+    public PenPosition getDrawingPoint(int i) {
         return this.path.get(i);
     }
 }
