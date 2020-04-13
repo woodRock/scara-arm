@@ -1,5 +1,5 @@
 public class PenPosition extends Point<Double> {
-    private boolean penDown;
+    private final boolean penDown;
 
     public PenPosition(double x, double y, boolean pen){
         super(x,y);

@@ -34,7 +34,7 @@ public class Drawing {
                 UI.setColor(Color.BLUE);
                 UI.drawLine(p0.getX(), p0.getY(), p1.getX(), p1.getY());
             } else {
-                //UI.setColor(Color.LIGHT_GRAY);
+                UI.setColor(Color.LIGHT_GRAY);
             }
         }
     }
@@ -49,12 +49,8 @@ public class Drawing {
 
     public void savePath(String fileName) {
         try {
-            File e = new File(fileName);
-            FileOutputStream is = new FileOutputStream(e);
-            OutputStreamWriter osw = new OutputStreamWriter(is);
-            BufferedWriter w = new BufferedWriter(osw);
+            BufferedWriter w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(fileName))));
             String strOut = "";
-
             for (PenPosition penPosition : this.path) {
                 strOut = penPosition.getX() + " " + penPosition.getY() + " ";
                 strOut += (penPosition.getPen()) ? "1" : "0";
