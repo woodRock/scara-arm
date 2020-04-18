@@ -1,3 +1,5 @@
+package nz.ac.engr110.scara;
+
 public class Point<T> {
     private T x;
     private T y;

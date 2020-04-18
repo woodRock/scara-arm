@@ -1,3 +1,5 @@
+package nz.ac.engr110.scara;
+
 import ecs100.UI;
 
 import java.awt.*;
@@ -5,9 +7,11 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Drawing {
-    private ArrayList<PenPosition> path = new ArrayList();
+    private ArrayList<PenPosition> path;
 
-    public Drawing() { }
+    public Drawing() {
+        this.path = new ArrayList<>();
+    }
 
     public void addPointToPath(double x, double y, boolean pen) {
         PenPosition penPosition = new PenPosition(x, y, pen);
@@ -48,16 +52,17 @@ public class Drawing {
     }
 
     public void savePath(String fileName) {
-        try {
-            BufferedWriter w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(fileName))));
-            String strOut = "";
+        try (
+                BufferedWriter w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(fileName))));
+                ){
+            StringBuilder strOut;
             for (PenPosition penPosition : this.path) {
-                strOut = penPosition.getX() + " " + penPosition.getY() + " ";
-                strOut += (penPosition.getPen()) ? "1" : "0";
-                strOut += "\n";
-                w.write(strOut);
+                strOut = new StringBuilder();
+                strOut.append(penPosition.getX() + " " + penPosition.getY() + " ");
+                strOut.append((penPosition.getPen()) ? "1" : "0");
+                strOut.append("\n");
+                w.write(strOut.toString());
             }
-            w.close();
         } catch (Exception error) {
             UI.println("Problem writing to the file statsTest.txt:\n" + error.getMessage());
         }
@@ -65,10 +70,10 @@ public class Drawing {
 
     public void loadPath(String fileName, Arm arm, double delay) {
         String inLine;
-        try {
-            BufferedReader e = new BufferedReader(new FileReader(new File(fileName)));
+        try (
+                BufferedReader e = new BufferedReader(new FileReader(new File(fileName)));
+        ){
             this.path.clear();
-
             while((inLine = e.readLine()) != null) {
                 UI.println(inLine);
                 String[] tokens = inLine.split(" ");

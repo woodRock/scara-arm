@@ -1,3 +1,5 @@
+package nz.ac.engr110.scara;
+
 public class PenPosition extends Point<Double> {
     private final boolean penDown;
 

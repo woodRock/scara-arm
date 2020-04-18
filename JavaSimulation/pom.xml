@@ -4,30 +4,95 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>groupId</groupId>
-    <artifactId>SCARA-ARM</artifactId>
+    <groupId>nz.ac.engr110.scara</groupId>
+    <artifactId>scara-simulation</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+    </properties>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+            <comments>The Open Source MIT License</comments>
+        </license>
+    </licenses>
+
+    <url>https://github.com/woodRock/scara-arm</url>
+    <inceptionYear>2016</inceptionYear>
+    <developers>
+        <developer>
+            <id>woodRock</id>
+            <name>Jesse Wood</name>
+            <email>j.r.h.wood98@gmail.com</email>
+            <url>https://woodRock.tk</url>
+            <organization>Wellington</organization>
+            <organizationUrl>https://www.wgtn.ac.nz/</organizationUrl>
+            <roles>
+                <role>student</role>
+                <role>developer</role>
+            </roles>
+            <timezone>New Zealand</timezone>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>Github's Issues</system>
+        <url>https://github.com/woodRock/scara-arm/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Github Actions</system>
+        <url>https://github.com/woodRock/scara-arm/actions/new</url>
+    </ciManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>nz.ac.ecs</groupId>
+            <artifactId>ecs100</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>
+                                        nz.ac.engr110.scara.Main
+                                    </mainClass>
+                                </manifest>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
-    <dependencies>
-        <dependency>
-            <groupId>com.sample</groupId>
-            <artifactId>sample</artifactId>
-            <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/ecs100.jar</systemPath>
-        </dependency>
-    </dependencies>
-
-
 </project>

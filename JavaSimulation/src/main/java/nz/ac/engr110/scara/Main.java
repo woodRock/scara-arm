@@ -1,18 +1,21 @@
+package nz.ac.engr110.scara;
+
 import ecs100.UI;
 import ecs100.UIFileChooser;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    private final int HEIGHT = 480;
-    private final int WIDTH = 640;
+    private static final int HEIGHT = 480;
+    private static final int WIDTH = 640;
+    private double delay = 20;
     private Arm arm;
     private Drawing drawing;
     private ToolPath toolPath;
     private STATES state = STATES.PEN_DOWN;
-    private double delay = 20;
 
     private enum STATES {
         INITIAL,
@@ -46,9 +49,13 @@ public class Main {
         UI.addButton("Save Pulse", this::savePulse);
         UI.addButton("Export Pulse",this::sendPulse);
         UI.addButton("Load SVG", this::loadSVG);
-        UI.addButton("Quit", () -> UI.quit());
+        UI.addButton("Quit", this::quit);
         UI.setMouseMotionListener(this::doMouse);
         UI.setKeyListener(this::doKeys);
+    }
+
+    private void quit(){
+        UI.quit();
     }
 
     private void defaults() {
@@ -58,7 +65,7 @@ public class Main {
 
     private void hardReset(){
         reset();
-        doMouse("moved", this.WIDTH/2,this.HEIGHT/4);
+        doMouse("moved",Main.WIDTH/2.0,Main.HEIGHT/4.0);
     }
 
     private void reset() {
@@ -76,8 +83,8 @@ public class Main {
         clearDrawing();
         this.state = STATES.AUTOMATED;
         final double diameter = 67;
-        final double xOffset = this.WIDTH/2;
-        final double yOffset = this.HEIGHT/2 - diameter;
+        final double xOffset = Main.WIDTH/2.0;
+        final double yOffset = Main.HEIGHT/2.0 - diameter;
         double increment = 0.1;
         for (double i = 0; i - increment <= 2* Math.PI; i += increment){
             drawPoint(xOffset + (diameter/2) * Math.sin(i), yOffset + (diameter/2) * Math.cos(i), true);
@@ -90,8 +97,8 @@ public class Main {
         clearDrawing();
         this.state = STATES.AUTOMATED;
         final int length = 100;
-        final int xOffset = this.WIDTH/2 - length/2;
-        final int yOffset = this.HEIGHT/2 - length;
+        final double xOffset = Main.WIDTH/2.0 - length/2.0;
+        final double yOffset = Main.HEIGHT/2.0 - length;
         for (int i = 0; i < length; i++){
             drawPoint(i + xOffset, yOffset, true);
         }
@@ -102,8 +109,8 @@ public class Main {
         clearDrawing();
         this.state = STATES.AUTOMATED;
         final int length = 54;
-        final int xOffset = this.WIDTH/2 - length/2;
-        final int yOffset = this.HEIGHT/2 - 2*length;
+        final double xOffset = Main.WIDTH/2.0 - length/2.0;
+        final double yOffset = Main.HEIGHT/2.0 - 2*length;
         for (int i = 0; i < length; i++){
             drawPoint(i + xOffset, yOffset, true);
         }
@@ -139,8 +146,9 @@ public class Main {
     public void loadAngle() {
         clearDrawing();
         this.state = STATES.AUTOMATED;
-        try {
-            Scanner sc = new Scanner(new File(UIFileChooser.open()));
+        try (
+                Scanner sc = new Scanner(new File(UIFileChooser.open()));
+                ){
             while (sc.hasNext()) {
                 double t1 = Double.parseDouble(sc.nextLine());
                 double t2 = Double.parseDouble(sc.nextLine());
@@ -171,18 +179,24 @@ public class Main {
     public void loadSVG() {
         clearDrawing();
         this.state = STATES.AUTOMATED;
+        StringBuilder out = new StringBuilder();
         String fileName = UIFileChooser.open();
-        try {
-            Scanner spacesScanner = new Scanner(new File(fileName));
-            String out = "";
+        try (
+                Scanner spacesScanner = new Scanner(new File(fileName))
+        ) {
             while (spacesScanner.hasNext()) {
-                out += " " + addSpaces(spacesScanner.next());
+                out.append(" " + addSpaces(spacesScanner.next()));
             }
-            Scanner sc = new Scanner(out);
+        } catch (IOException e){
+            UI.println("File not found:" + e.getMessage());
+        }
+        try (
+                Scanner sc = new Scanner(out.toString());
+        ){
             while(sc.hasNext()) {
                 String string = sc.next();
-                double x = this.WIDTH/2 - 100;
-                double y = this.HEIGHT/2 - 150;
+                double x = Main.WIDTH/2.0 - 100;
+                double y = Main.HEIGHT/2.0 - 150;
                 double scalar = 0.6;
                 switch (string) {
                     case "L":
@@ -195,11 +209,10 @@ public class Main {
                         y += scalar * sc.nextDouble();
                         drawPoint(x,y,false);
                         break;
+                    default:
+                        break;
                 }
             }
-        }
-        catch (Exception error) {
-            UI.println("SVG File Error:\n " + error.getMessage());
         } finally {
             this.state = STATES.MANUAL;
         }
@@ -215,6 +228,8 @@ public class Main {
                     break;
                 case " ":
                     character = " ";
+                    break;
+                default:
                     break;
             }
             result.append(character);
@@ -236,6 +251,8 @@ public class Main {
             case "p":
                 this.state = (this.state == STATES.AUTOMATED)? STATES.PEN_DOWN : STATES.AUTOMATED;
                 break;
+            default:
+                break;
         }
     }
 
@@ -253,7 +270,7 @@ public class Main {
     }
 
     private boolean isOffScreen(double x, double y){
-        return x >= this.WIDTH || y >= this.HEIGHT;
+        return x >= Main.WIDTH || y >= Main.HEIGHT;
     }
 
     private boolean isAutomated(){
@@ -344,9 +361,8 @@ public class Main {
     }
 
     private void sleep(){
-        int delay = (int) this.delay;
         try {
-            UI.sleep(delay);
+            UI.sleep(this.delay);
         }
         catch (Exception ex) {
             UI.println("Sleep error: " + ex.getMessage());
