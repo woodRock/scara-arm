@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Drawing {
-    private ArrayList<PenPosition> path;
+    private final ArrayList<PenPosition> path;
 
     public Drawing() {
         this.path = new ArrayList<>();
@@ -58,7 +58,7 @@ public class Drawing {
             StringBuilder strOut;
             for (PenPosition penPosition : this.path) {
                 strOut = new StringBuilder();
-                strOut.append(penPosition.getX() + " " + penPosition.getY() + " ");
+                strOut.append(penPosition.getX()).append(" ").append(penPosition.getY()).append(" ");
                 strOut.append((penPosition.getPen()) ? "1" : "0");
                 strOut.append("\n");
                 w.write(strOut.toString());

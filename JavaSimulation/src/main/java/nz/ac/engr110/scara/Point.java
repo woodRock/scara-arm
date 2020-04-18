@@ -1,8 +1,8 @@
 package nz.ac.engr110.scara;
 
 public class Point<T> {
-    private T x;
-    private T y;
+    private final T x;
+    private final T y;
 
     public Point(T x, T y){
         this.x = x;
@@ -15,13 +15,5 @@ public class Point<T> {
 
     public T getY() {
         return this.y;
-    }
-
-    public void setX(T x){
-        this.x = x;
-    }
-
-    public void setY(T y){
-        this.y = y;
     }
 }

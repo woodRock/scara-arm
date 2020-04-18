@@ -68,7 +68,7 @@ public class ToolPath {
             arm.setAngles(this.theta1Vector.get(i),this.theta2Vector.get(i));
             this.pwm1Vector.add(arm.getPWM1());
             this.pwm2Vector.add(arm.getPWM2());
-            this.pwm1Vector.add((this.penVector.get(i) == 1)? LOW : HIGH);
+            this.pwm3Vector.add((this.penVector.get(i) == 1)? LOW : HIGH);
         }
     }
 
