@@ -13,14 +13,14 @@ N.B. This maven commands must be run in the _JavaSimulation_ directory.
 Before we install the jar, we must add the _ecs100_ 3rd party jar.
 
 ```bash 
-mvn install:install-file -Dfile=../ecs100.jar -DgroupId=nz.ac.ecs -DartifactId=ecs100 -Dversion=1.0 -Dpackaging=jar
+$ mvn install:install-file -Dfile=../ecs100.jar -DgroupId=nz.ac.ecs -DartifactId=ecs100 -Dversion=1.0 -Dpackaging=jar
 ```
 
 ### Installation
 This command creates two jars in the target folder.
 
 ```bash 
-mvn clean install
+$ mvn clean install
 ```
 
 ### Run
@@ -28,5 +28,5 @@ To run the application we need to use the jar with dependencies.
 
 The _scara-X.Y-jar-with-dependencies.jar_ is located in the target folder.
 ```bash 
-java -jar target/scara-2.0-jar-with-dependencies.jar
+$ java -jar target/scara-2.0-jar-with-dependencies.jar
 ```
