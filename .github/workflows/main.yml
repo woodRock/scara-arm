@@ -12,4 +12,5 @@ jobs:
       - name: Clean and Test with Maven
         run: |
           cd JavaSimulation
+          mvn install:install-file -Dfile=../ecs100.jar -DgroupId=nz.ac.ecs -DartifactId=ecs100 -Dversion=1.0 -Dpackaging=jar
           mvn clean test --file pom.xml
